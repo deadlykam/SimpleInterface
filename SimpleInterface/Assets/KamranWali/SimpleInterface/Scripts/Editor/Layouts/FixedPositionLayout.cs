@@ -41,9 +41,14 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             EndFadeGroup();
         }
 
-        public override void Update(Event currentEvent)
+        public override void Update(Event currentEvent) { if (currentEvent.keyCode == KeyCode.I && currentEvent.type == EventType.KeyDown) _fixedPosGroup.target = !_fixedPosGroup.target; }
+
+        public override Vector3 GetPosition(Vector3 position)
         {
-            if (currentEvent.keyCode == KeyCode.I && currentEvent.type == EventType.KeyDown) _fixedPosGroup.target = !_fixedPosGroup.target; // Toggling fixed position
+            if (IsToggleGroupShown(_fixedPosGroupX.faded)) position.x = _fixedPosX;
+            if (IsToggleGroupShown(_fixedPosGroupY.faded)) position.y = _fixedPosY;
+            if (IsToggleGroupShown(_fixedPosGroupZ.faded)) position.z = _fixedPosZ;
+            return position;
         }
     }
 }

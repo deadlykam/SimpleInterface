@@ -14,6 +14,13 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private AnimBool _placeGroup;
         private RaycastHit _hit; // Storing ray hit
         private Transform _prefabTemp; // For storing created prefabs
+        private Func<Vector3, Vector3> _getActualPosition;
+
+        /// <summary>
+        /// This constructor creates the PlacementLayout object.
+        /// </summary>
+        /// <param name="getActualPosition">The delegate that returns the actual position, of type Func<Vector3, Vector3></param>
+        public PlacementLayout(Func<Vector3, Vector3> getActualPosition) => _getActualPosition = getActualPosition;
 
         public override bool IsShown() => IsToggleGroupShown(_placeGroup.faded);
 
@@ -42,7 +49,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 if (Physics.Raycast(HandleUtility.GUIPointToWorldRay(currentEvent.mousePosition), out _hit, Mathf.Infinity, 1 << _layerMask)) // Hitting the correct layer
                 {
                     _prefabTemp = _root == null ? PrefabUtility.InstantiatePrefab(_prefab) as Transform : PrefabUtility.InstantiatePrefab(_prefab, _root) as Transform; // Creating the prefab
-                    _prefabTemp.position = /*GetActualPosition(_hit.point)*/ _hit.point; // Placing in hit position
+                    _prefabTemp.position = /*GetActualPosition(_hit.point)*/ /*_hit.point*/ _getActualPosition(_hit.point); // Placing in hit position
                     Undo.RegisterCreatedObjectUndo(_prefabTemp.gameObject, "Prefab Placement");
                 }
             }

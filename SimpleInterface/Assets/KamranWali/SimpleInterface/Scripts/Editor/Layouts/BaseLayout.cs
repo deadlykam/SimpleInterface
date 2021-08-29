@@ -30,6 +30,13 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         /// <returns>True means shown, false otherwise, of type bool</returns>
         public abstract bool IsShown();
 
+        /// <summary>
+        /// This method gets the actual position.
+        /// </summary>
+        /// <param name="position">The position used to get the actual position, of type Vector3</param>
+        /// <returns>The actual position, of type Vector3</returns>
+        public virtual Vector3 GetPosition(Vector3 position) => position;
+
         #region Creation
         protected bool ToggleLeft(string name, string toolTip, AnimBool toggle) => EditorGUILayout.ToggleLeft(new GUIContent(name, toolTip), toggle.target);
         protected Transform TransformField(string name, string toolTip, Transform obj, bool isHierarchy) => EditorGUILayout.ObjectField(new GUIContent(name, toolTip), obj, typeof(Transform), isHierarchy) as Transform;
