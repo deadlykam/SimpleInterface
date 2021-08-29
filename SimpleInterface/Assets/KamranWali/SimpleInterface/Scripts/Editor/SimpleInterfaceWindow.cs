@@ -1,3 +1,4 @@
+using KamranWali.SimpleInterface.Editor.Layouts;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
@@ -7,24 +8,27 @@ namespace KamranWali.SimpleInterface.Editor
     public class SimpleInterfaceWindow : EditorWindow
     {
         // Input Fields
-        private Transform _prefab;
+        private BaseLayout _placementLayout;
+        private BaseLayout _fixedPositionLayout;
+
+        /*private Transform _prefab;
         private Transform _root;
-        private LayerMask _layerMask;
-        private float _fixedPosX;
+        private LayerMask _layerMask;*/
+        /*private float _fixedPosX;
         private float _fixedPosY;
-        private float _fixedPosZ;
+        private float _fixedPosZ;*/
 
         // Group Fields
-        private AnimBool _placeGroup;
-        private AnimBool _fixedPosGroup;
+        //private AnimBool _placeGroup;
+        /*private AnimBool _fixedPosGroup;
         private AnimBool _fixedPosGroupX;
         private AnimBool _fixedPosGroupY;
-        private AnimBool _fixedPosGroupZ;
+        private AnimBool _fixedPosGroupZ;*/
 
         // Local Fields
         private Event _event; // Storing current events
-        private Transform _prefabTemp; // For storing created prefabs
-        private RaycastHit _hit; // Storing ray hit
+        /*private Transform _prefabTemp; // For storing created prefabs
+        private RaycastHit _hit; // Storing ray hit*/
         private Vector3 _actualPos; // The actual position to place the object in
 
         [MenuItem("KamranWali/SimpleInterfaceWindow")]
@@ -45,17 +49,19 @@ namespace KamranWali.SimpleInterface.Editor
         private void OnGUI()
         {
             GUILayout.Label("SimpleInterfaceWindow", EditorStyles.boldLabel);
+            _placementLayout.SetupOnGUI();
+            _fixedPositionLayout.SetupOnGUI();
 
-            _placeGroup.target = EditorGUILayout.ToggleLeft(new GUIContent("Place Prefab", "Toggle to place prefab. Hotkey = 'U'"), _placeGroup.target);
+            /*_placeGroup.target = EditorGUILayout.ToggleLeft(new GUIContent("Place Prefab", "Toggle to place prefab. Hotkey = 'U'"), _placeGroup.target);
             if (EditorGUILayout.BeginFadeGroup(_placeGroup.faded)) // Placement group
             {
                 _prefab = EditorGUILayout.ObjectField("Prefab", _prefab, typeof(Transform), false) as Transform;
                 _root = EditorGUILayout.ObjectField(new GUIContent("Root", "The root into which the prefab will be placed. Keeping null means default root will be used."), _root, typeof(Transform), true) as Transform;
                 _layerMask = EditorGUILayout.LayerField("Collidable Layer", _layerMask);
             }
-            EditorGUILayout.EndFadeGroup();
+            EditorGUILayout.EndFadeGroup();*/
 
-            _fixedPosGroup.target = EditorGUILayout.ToggleLeft(new GUIContent("Fixed Position", "Toggle to place prefab in given fixed Vector3 axis. Hotkey = 'I'"), _fixedPosGroup.target);
+            /*_fixedPosGroup.target = EditorGUILayout.ToggleLeft(new GUIContent("Fixed Position", "Toggle to place prefab in given fixed Vector3 axis. Hotkey = 'I'"), _fixedPosGroup.target);
             if (EditorGUILayout.BeginFadeGroup(_fixedPosGroup.faded))
             {
                 // X Layout
@@ -85,7 +91,7 @@ namespace KamranWali.SimpleInterface.Editor
                 EditorGUILayout.EndFadeGroup();
                 GUILayout.EndHorizontal();
             }
-            EditorGUILayout.EndFadeGroup();
+            EditorGUILayout.EndFadeGroup();*/
         }
 
         /// <summary>
@@ -96,7 +102,10 @@ namespace KamranWali.SimpleInterface.Editor
         {
             _event = Event.current;
 
-            if(IsToggleGroupShown(_placeGroup.faded) && _event.type == EventType.MouseDown && _event.button == 0) // Checking if left mouse button pressed
+            _placementLayout.Update(_event);
+            _fixedPositionLayout.Update(_event);
+
+            /*if(IsToggleGroupShown(_placeGroup.faded) && _event.type == EventType.MouseDown && _event.button == 0) // Checking if left mouse button pressed
             {
                 if (Physics.Raycast(HandleUtility.GUIPointToWorldRay(_event.mousePosition), out _hit, Mathf.Infinity, 1 << _layerMask)) // Hitting the correct layer
                 {
@@ -106,8 +115,8 @@ namespace KamranWali.SimpleInterface.Editor
                 }
             }
 
-            if (_event.keyCode == KeyCode.U && _event.type == EventType.KeyDown) _placeGroup.target = !_placeGroup.target; // Toggling placement
-            if (_event.keyCode == KeyCode.I && _event.type == EventType.KeyDown) _fixedPosGroup.target = !_fixedPosGroup.target; // Toggling fixed position
+            if (_event.keyCode == KeyCode.U && _event.type == EventType.KeyDown) _placeGroup.target = !_placeGroup.target; // Toggling placement*/
+            //if (_event.keyCode == KeyCode.I && _event.type == EventType.KeyDown) _fixedPosGroup.target = !_fixedPosGroup.target; // Toggling fixed position
 
             //TODO: For dragging Tools.current = Tool.View and use MouseDrag
         }
@@ -117,16 +126,22 @@ namespace KamranWali.SimpleInterface.Editor
         /// </summary>
         private void SetupGroups() 
         {
-            _placeGroup = new AnimBool(true);
-            _placeGroup.valueChanged.AddListener(Repaint);
-            _fixedPosGroup = new AnimBool(false);
+            _placementLayout = new PlacementLayout();
+            _placementLayout.SetupOnEnable(Repaint);
+
+            _fixedPositionLayout = new FixedPositionLayout();
+            _fixedPositionLayout.SetupOnEnable(Repaint);
+
+            /*_placeGroup = new AnimBool(true);
+            _placeGroup.valueChanged.AddListener(Repaint);*/
+            /*_fixedPosGroup = new AnimBool(false);
             _fixedPosGroup.valueChanged.AddListener(Repaint);
             _fixedPosGroupX = new AnimBool(false);
             _fixedPosGroupX.valueChanged.AddListener(Repaint);
             _fixedPosGroupY = new AnimBool(false);
             _fixedPosGroupY.valueChanged.AddListener(Repaint);
             _fixedPosGroupZ = new AnimBool(false);
-            _fixedPosGroupZ.valueChanged.AddListener(Repaint);
+            _fixedPosGroupZ.valueChanged.AddListener(Repaint);*/
         }
 
         /// <summary>
@@ -145,12 +160,12 @@ namespace KamranWali.SimpleInterface.Editor
         {
             _actualPos = hitPoint;
 
-            if (IsToggleGroupShown(_fixedPosGroup.faded))
+            /*if (IsToggleGroupShown(_fixedPosGroup.faded))
             {
                 if (IsToggleGroupShown(_fixedPosGroupX.faded)) _actualPos.x = _fixedPosX;
                 if (IsToggleGroupShown(_fixedPosGroupY.faded)) _actualPos.y = _fixedPosY;
                 if (IsToggleGroupShown(_fixedPosGroupZ.faded)) _actualPos.z = _fixedPosZ;
-            }
+            }*/
 
             return _actualPos; // Returning the actual position
         }
