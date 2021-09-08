@@ -16,7 +16,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 
         public FixedPositionLayout(UnityAction repaint) : base(repaint){}
 
-        public override bool IsShown() => IsToggleGroupShown(_fixedPosGroup.faded);
+        public override bool IsShown() => _fixedPosGroup.target;
 
         public override void SetupOnGUI()
         {
@@ -29,15 +29,22 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 BeginHorizontalLayout(ref _fixedPosGroupZ, ref _fixedPosZ, "Z", "Toggle to keep the Z axis fixed", 50f, 1f);
             }
             EndFadeGroup();
+            HideOtherLayouts(); // Hidding other layouts
         }
 
-        public override void Update(Event currentEvent) { if (currentEvent.keyCode == KeyCode.I && currentEvent.type == EventType.KeyDown) _fixedPosGroup.target = !_fixedPosGroup.target; }
+        public override void Update(Event currentEvent) 
+        {
+            if (currentEvent.keyCode == KeyCode.I && currentEvent.type == EventType.KeyDown)
+            {
+                _fixedPosGroup.target = !_fixedPosGroup.target;
+                HideOtherLayouts(); // Hidding other layouts
+            }
+        }
+
+        public override void Hide() { if (IsShown()) _fixedPosGroup.target = false; }
 
         public override Vector3 GetPosition(Vector3 position)
         {
-            /*if (IsToggleGroupShown(_fixedPosGroupX.faded)) position.x = _fixedPosX;
-            if (IsToggleGroupShown(_fixedPosGroupY.faded)) position.y = _fixedPosY;
-            if (IsToggleGroupShown(_fixedPosGroupZ.faded)) position.z = _fixedPosZ;*/
             position.Set(IsToggleGroupShown(_fixedPosGroupX.faded) ? _fixedPosX : position.x,
                          IsToggleGroupShown(_fixedPosGroupY.faded) ? _fixedPosY : position.y,
                          IsToggleGroupShown(_fixedPosGroupZ.faded) ? _fixedPosZ : position.z);

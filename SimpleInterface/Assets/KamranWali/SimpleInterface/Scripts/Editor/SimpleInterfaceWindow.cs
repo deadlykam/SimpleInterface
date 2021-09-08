@@ -10,6 +10,7 @@ namespace KamranWali.SimpleInterface.Editor
         private BaseLayout _placementLayout;
         private BaseLayout _fixedPositionLayout;
         private BaseLayout _fixedRotationLayout;
+        private BaseLayout _randomRotationLayout;
         private Event _event; // Storing current events
 
         [MenuItem("KamranWali/SimpleInterfaceWindow")]
@@ -55,11 +56,17 @@ namespace KamranWali.SimpleInterface.Editor
             _placementLayout = new PlacementLayout(Repaint, GetActualPosition, GetActualRotation);
             _fixedPositionLayout = new FixedPositionLayout(Repaint);
             _fixedRotationLayout = new FixedRotationLayout(Repaint);
+            _randomRotationLayout = new RandomRotationLayout(Repaint);
+
+            /*===Linking Opposite Layouts===*/
+            _fixedRotationLayout.AddHideLayout(_randomRotationLayout.Hide);
+            _randomRotationLayout.AddHideLayout(_fixedRotationLayout.Hide);
 
             /*===Adding Layouts===*/
             _manager.AddLayout(_placementLayout);
             _manager.AddLayout(_fixedPositionLayout);
             _manager.AddLayout(_fixedRotationLayout);
+            _manager.AddLayout(_randomRotationLayout);
         }
 
         /// <summary>
@@ -81,6 +88,7 @@ namespace KamranWali.SimpleInterface.Editor
         private Quaternion GetActualRotation(Quaternion rotation)
         {
             if (_fixedRotationLayout.IsShown()) return _fixedRotationLayout.GetRotation(rotation); // Returning Fixed Rotation
+            else if (_randomRotationLayout.IsShown()) return _randomRotationLayout.GetRotation(rotation); // Returning Random Rotation
             return rotation;
         }
     }

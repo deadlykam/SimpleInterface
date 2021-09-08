@@ -29,7 +29,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             _getActualRotation = getActualRotation;
         }
 
-        public override bool IsShown() => IsToggleGroupShown(_placeGroup.faded);
+        public override bool IsShown() => _placeGroup.target;
 
         public override void SetupOnGUI()
         {
@@ -41,6 +41,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 _layerMask = LayerField("Collidable Layer", "The layer on which the prefab will be placed.", _layerMask);
             }
             EndFadeGroup();
+            HideOtherLayouts(); // Hidding other layouts
         }
 
         public override void Update(Event currentEvent)
@@ -56,8 +57,14 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 }
             }
 
-            if (currentEvent.keyCode == KeyCode.U && currentEvent.type == EventType.KeyDown) _placeGroup.target = !_placeGroup.target; // Toggling placement
+            if (currentEvent.keyCode == KeyCode.U && currentEvent.type == EventType.KeyDown)
+            {
+                _placeGroup.target = !_placeGroup.target; // Toggling placement
+                HideOtherLayouts(); // Hidding other layouts
+            }
         }
+
+        public override void Hide() { if (IsShown()) _placeGroup.target = false; }
 
         protected override void SetupOnEnable(UnityAction repaint)
         {

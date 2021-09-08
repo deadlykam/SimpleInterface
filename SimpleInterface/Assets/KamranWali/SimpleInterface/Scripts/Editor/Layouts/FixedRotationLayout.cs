@@ -16,7 +16,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 
         public FixedRotationLayout(UnityAction repaint) : base(repaint){}
 
-        public override bool IsShown() => IsToggleGroupShown(_fixedRotGroup.faded);
+        public override bool IsShown() => _fixedRotGroup.target;
 
         public override void SetupOnGUI()
         {
@@ -29,9 +29,19 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 BeginHorizontalLayout(ref _fixedRotGroupZ, ref _fixedRotZ, "Z", "Toggle to keep the Z rotation fixed", 50f, 1f);
             }
             EndFadeGroup();
+            HideOtherLayouts(); // Hidding other layouts
         }
 
-        public override void Update(Event currentEvent){ if (currentEvent.keyCode == KeyCode.O && currentEvent.type == EventType.KeyDown) _fixedRotGroup.target = !_fixedRotGroup.target; }
+        public override void Update(Event currentEvent)
+        {
+            if (currentEvent.keyCode == KeyCode.O && currentEvent.type == EventType.KeyDown)
+            {
+                _fixedRotGroup.target = !_fixedRotGroup.target;
+                HideOtherLayouts(); // Hidding other layouts
+            }
+        }
+
+        public override void Hide() { if (IsShown()) _fixedRotGroup.target = false; }
 
         public override Quaternion GetRotation(Quaternion rotation)
         {
