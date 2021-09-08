@@ -20,13 +20,13 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 
         public override void SetupOnGUI()
         {
-            _fixedRotGroup.target = ToggleLeft("Fixed Rotation", "Toggle to place prefab in given fixed Rotation axis. Hotkey = 'O'", _fixedRotGroup);
+            _fixedRotGroup.target = ToggleLeft("Fixed Rotation (O)", "Toggle to place prefab in given fixed Rotation axis. Hotkey = 'O'", _fixedRotGroup);
 
             if (BeginFadeGroup(_fixedRotGroup.faded))
             {
-                BeginHorizontalLayout(ref _fixedRotGroupX, ref _fixedRotX, "X", "Toggle to keep the X rotation fixed", 50f, 1f);
-                BeginHorizontalLayout(ref _fixedRotGroupY, ref _fixedRotY, "Y", "Toggle to keep the Y rotation fixed", 50f, 1f);
-                BeginHorizontalLayout(ref _fixedRotGroupZ, ref _fixedRotZ, "Z", "Toggle to keep the Z rotation fixed", 50f, 1f);
+                BeginHorizontalLayout(ref _fixedRotGroupX, ref _fixedRotX, "X", "Toggle to keep the X rotation fixed", 20f, 1f);
+                BeginHorizontalLayout(ref _fixedRotGroupY, ref _fixedRotY, "Y", "Toggle to keep the Y rotation fixed", 20f, 1f);
+                BeginHorizontalLayout(ref _fixedRotGroupZ, ref _fixedRotZ, "Z", "Toggle to keep the Z rotation fixed", 20f, 1f);
             }
             EndFadeGroup();
             HideOtherLayouts(); // Hidding other layouts
@@ -43,13 +43,9 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 
         public override void Hide() { if (IsShown()) _fixedRotGroup.target = false; }
 
-        public override Quaternion GetRotation(Quaternion rotation)
-        {
-            rotation = Quaternion.Euler(IsToggleGroupShown(_fixedRotGroupX.faded) ? _fixedRotX : rotation.eulerAngles.x,
-                                        IsToggleGroupShown(_fixedRotGroupY.faded) ? _fixedRotY : rotation.eulerAngles.y,
-                                        IsToggleGroupShown(_fixedRotGroupZ.faded) ? _fixedRotZ : rotation.eulerAngles.z);
-            return rotation;
-        }
+        public override Quaternion GetRotation(Quaternion rotation) => rotation = Quaternion.Euler(IsToggleGroupShown(_fixedRotGroupX.faded) ? _fixedRotX : rotation.eulerAngles.x,
+                                                                                                   IsToggleGroupShown(_fixedRotGroupY.faded) ? _fixedRotY : rotation.eulerAngles.y,
+                                                                                                   IsToggleGroupShown(_fixedRotGroupZ.faded) ? _fixedRotZ : rotation.eulerAngles.z);
 
         protected override void SetupOnEnable(UnityAction repaint)
         {

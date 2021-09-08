@@ -24,13 +24,13 @@ namespace KamranWali.SimpleInterface.Editor.Layouts {
 
         public override void SetupOnGUI()
         {
-            _randomRotGroup.target = ToggleLeft("Random Rotation", "Toggle to place prefab in random Rotation axis. Hotkey = 'J'", _randomRotGroup);
+            _randomRotGroup.target = ToggleLeft("Random Rotation (J)", "Toggle to place prefab in random Rotation axis. Hotkey = 'J'", _randomRotGroup);
 
             if (BeginFadeGroup(_randomRotGroup.faded))
             {
-                BeginHorizontalLayout(ref _rangeRotGroupX, ref _rangeRotXMin, ref _rangeRotXMax, "X", "Toggle to randomize the X rotation. Min, Max.", 50f, 1f);
-                BeginHorizontalLayout(ref _rangeRotGroupY, ref _rangeRotYMin, ref _rangeRotYMax, "Y", "Toggle to randomize the Y rotation. Min, Max.", 50f, 1f);
-                BeginHorizontalLayout(ref _rangeRotGroupZ, ref _rangeRotZMin, ref _rangeRotZMax, "Z", "Toggle to randomize the Z rotation. Min, Max.", 50f, 1f);
+                BeginHorizontalLayout(ref _rangeRotGroupX, ref _rangeRotXMin, ref _rangeRotXMax, "X", "Toggle to randomize the X rotation. Min, Max.", "Min", "Max", "Minimum Value", "Maximum Value", 20f, 25f);
+                BeginHorizontalLayout(ref _rangeRotGroupY, ref _rangeRotYMin, ref _rangeRotYMax, "Y", "Toggle to randomize the Y rotation. Min, Max.", "Min", "Max", "Minimum Value", "Maximum Value", 20f, 25f);
+                BeginHorizontalLayout(ref _rangeRotGroupZ, ref _rangeRotZMin, ref _rangeRotZMax, "Z", "Toggle to randomize the Z rotation. Min, Max.", "Min", "Max", "Minimum Value", "Maximum Value", 20f, 25f);
             }
             EndFadeGroup();
             HideOtherLayouts(); // Hidding other layouts
@@ -47,14 +47,9 @@ namespace KamranWali.SimpleInterface.Editor.Layouts {
 
         public override void Hide() { if (IsShown()) _randomRotGroup.target = false; }
 
-        public override Quaternion GetRotation(Quaternion rotation)
-        {
-            rotation = Quaternion.Euler(IsToggleGroupShown(_rangeRotGroupX.faded) ? Random.Range(_rangeRotXMin, _rangeRotXMax) : rotation.eulerAngles.x,
-                                        IsToggleGroupShown(_rangeRotGroupY.faded) ? Random.Range(_rangeRotYMin, _rangeRotYMax) : rotation.eulerAngles.y,
-                                        IsToggleGroupShown(_rangeRotGroupZ.faded) ? Random.Range(_rangeRotZMin, _rangeRotZMax) : rotation.eulerAngles.z);
-
-            return rotation;
-        }
+        public override Quaternion GetRotation(Quaternion rotation) => rotation = Quaternion.Euler(IsToggleGroupShown(_rangeRotGroupX.faded) ? Random.Range(_rangeRotXMin, _rangeRotXMax) : rotation.eulerAngles.x,
+                                                                                                   IsToggleGroupShown(_rangeRotGroupY.faded) ? Random.Range(_rangeRotYMin, _rangeRotYMax) : rotation.eulerAngles.y,
+                                                                                                   IsToggleGroupShown(_rangeRotGroupZ.faded) ? Random.Range(_rangeRotZMin, _rangeRotZMax) : rotation.eulerAngles.z);
 
         protected override void SetupOnEnable(UnityAction repaint)
         {

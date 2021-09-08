@@ -16,6 +16,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private Transform _prefabTemp; // For storing created prefabs
         private Func<Vector3, Vector3> _getActualPosition;
         private Func<Quaternion, Quaternion> _getActualRotation;
+        private Func<Vector3, Vector3> _getActualScale;
 
         /// <summary>
         /// This constructor creates the PlacementLayout object.
@@ -23,17 +24,19 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         /// <param name="repaint">For repainting the GUI, of type UnityAction</param>
         /// <param name="getActualPosition">The delegate that returns the actual position, of type Func<Vector3, Vector3></param>
         /// <param name="getActualRotation">The delegate that returns the actual rotation, of type Func<Quaternion, Quaternion></param>
-        public PlacementLayout(UnityAction repaint, Func<Vector3, Vector3> getActualPosition, Func<Quaternion, Quaternion> getActualRotation) : base(repaint)
+        /// <param name="getActualScale">The delegate that returns the actual scale, of type Func<Vector3, Vector3></param>
+        public PlacementLayout(UnityAction repaint, Func<Vector3, Vector3> getActualPosition, Func<Quaternion, Quaternion> getActualRotation, Func<Vector3, Vector3> getActualScale) : base(repaint)
         {
             _getActualPosition = getActualPosition;
             _getActualRotation = getActualRotation;
+            _getActualScale = getActualScale;
         }
 
         public override bool IsShown() => _placeGroup.target;
 
         public override void SetupOnGUI()
         {
-            _placeGroup.target = ToggleLeft("Place Prefab", "Toggle to place prefab. Hotkey = 'U'", _placeGroup);
+            _placeGroup.target = ToggleLeft("Place Prefab (U)", "Toggle to place prefab. Hotkey = 'U'", _placeGroup);
             if (BeginFadeGroup(_placeGroup.faded))
             {
                 _prefab = TransformField("Prefab", "The prefab to spawn", _prefab, false);
@@ -53,6 +56,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                     _prefabTemp = _root == null ? PrefabUtility.InstantiatePrefab(_prefab) as Transform : PrefabUtility.InstantiatePrefab(_prefab, _root) as Transform; // Creating the prefab
                     _prefabTemp.position = _getActualPosition(_hit.point); // Placing in hit position
                     _prefabTemp.rotation = _getActualRotation(_prefabTemp.rotation); // Rotating to the actual rotation
+                    _prefabTemp.localScale = _getActualScale(_prefabTemp.localScale); // Setting the actual scale
                     Undo.RegisterCreatedObjectUndo(_prefabTemp.gameObject, "Prefab Placement");
                 }
             }

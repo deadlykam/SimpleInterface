@@ -37,6 +37,13 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         public virtual Quaternion GetRotation(Quaternion rotation) => rotation;
 
         /// <summary>
+        /// This method gets the actual scale.
+        /// </summary>
+        /// <param name="scale">The scale used to get the actual scale, of type Vector3</param>
+        /// <returns>The actual scale, of type Vector3</returns>
+        public virtual Vector3 GetScale(Vector3 scale) => scale;
+
+        /// <summary>
         /// This method sets up the layout and MUST be called in OnGUI method.
         /// </summary>
         public abstract void SetupOnGUI();
@@ -73,6 +80,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected bool ToggleLeft(string name, string toolTip, AnimBool toggle) => EditorGUILayout.ToggleLeft(new GUIContent(name, toolTip), toggle.target);
         protected Transform TransformField(string name, string toolTip, Transform obj, bool isHierarchy) => EditorGUILayout.ObjectField(new GUIContent(name, toolTip), obj, typeof(Transform), isHierarchy) as Transform;
         protected int LayerField(string name, string toolTip, LayerMask layerMask) => EditorGUILayout.LayerField(new GUIContent(name, toolTip), layerMask);
+        protected float FloatField(string name, string toolTip, float obj) => EditorGUILayout.FloatField(new GUIContent(name, toolTip), obj);
         protected float FloatField(float obj) => EditorGUILayout.FloatField(obj);
         #endregion
 
@@ -81,6 +89,21 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected void EndFadeGroup() => EditorGUILayout.EndFadeGroup();
         protected void EndHorizontal() => GUILayout.EndHorizontal();
         #endregion
+
+        /// <summary>
+        /// This method creates a horizontal layout.
+        /// </summary>
+        /// <param name="obj">The reference to the float, of type float</param>
+        /// <param name="space">The space from the left, of type float</param>
+        /// <param name="width">The gap between fields, of type float</param>
+        protected void BeginHorizontalLayout(ref float obj, string name, string toolTip, float space, float width)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(space);
+            EditorGUIUtility.labelWidth = width;
+            obj = FloatField(name, toolTip, obj);
+            EndHorizontal();
+        }
 
         /// <summary>
         /// This method creates a horizontal layout.
@@ -103,6 +126,27 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         /// <summary>
         /// This method creates a horizontal layout.
         /// </summary>
+        /// <param name="obj1">The reference to the float, of type float</param>
+        /// <param name="obj2">The reference to the float, of type float</param>
+        /// <param name="name1">The name of obj1, of type string</param>
+        /// <param name="name2">The name of obj2, of type string</param>
+        /// <param name="toolTip1">The tooltip for obj1, of type string</param>
+        /// <param name="toolTip2">The tooltip for obj2, of type string</param>
+        /// <param name="space">The space from the left, of type float</param>
+        /// <param name="width">The gap between fields, of type float</param>
+        protected void BeginHorizontalLayout(ref float obj1, ref float obj2, string name1, string name2, string toolTip1, string toolTip2, float space, float width)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(space);
+            EditorGUIUtility.labelWidth = width;
+            obj1 = FloatField(name1, toolTip1, obj1);
+            obj2 = FloatField(name2, toolTip2, obj2);
+            EndHorizontal();
+        }
+
+        /// <summary>
+        /// This method creates a horizontal layout.
+        /// </summary>
         /// <param name="toggle">The reference to the toggle, of type Animbool</param>
         /// <param name="obj1">The reference to the float, of type float</param>
         /// <param name="obj2">The reference to the float, of type float</param>
@@ -119,6 +163,33 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             {
                 obj1 = FloatField(obj1);
                 obj2 = FloatField(obj2);
+            }
+
+            EndFadeGroup();
+            EndHorizontal();
+        }
+
+        /// <summary>
+        /// This method creates a horizontal layout.
+        /// </summary>
+        /// <param name="toggle">The reference to the toggle, of type Animbool</param>
+        /// <param name="obj1">The reference to the float, of type float</param>
+        /// <param name="obj2">The reference to the float, of type float</param>
+        /// <param name="space">The space from the left, of type float</param>
+        /// <param name="width">The gap between fields, of type float</param>
+        protected void BeginHorizontalLayout(ref AnimBool toggle, ref float obj1, ref float obj2, string toggleName, string toggleToolTip, string name1, string name2, string toolTip1, string toolTip2, float space, float width)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(space);
+            EditorGUIUtility.labelWidth = width;
+            toggle.target = ToggleLeft(toggleName, toggleToolTip, toggle);
+
+            if (BeginFadeGroup(toggle.faded)) // Condition for showing the two floats value
+            {
+                GUILayout.BeginHorizontal();
+                obj1 = FloatField(name1, toolTip1, obj1);
+                obj2 = FloatField(name2, toolTip2, obj2);
+                EndHorizontal();
             }
 
             EndFadeGroup();
