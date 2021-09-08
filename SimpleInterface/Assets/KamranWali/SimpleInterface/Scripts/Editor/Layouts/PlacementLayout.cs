@@ -15,15 +15,21 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private RaycastHit _hit; // Storing ray hit
         private Transform _prefabTemp; // For storing created prefabs
         private Func<Vector3, Vector3> _getActualPosition;
+        private Func<Quaternion, Quaternion> _getActualRotation;
 
         /// <summary>
         /// This constructor creates the PlacementLayout object.
         /// </summary>
         /// <param name="repaint">For repainting the GUI, of type UnityAction</param>
         /// <param name="getActualPosition">The delegate that returns the actual position, of type Func<Vector3, Vector3></param>
-        public PlacementLayout(UnityAction repaint, Func<Vector3, Vector3> getActualPosition) : base(repaint) => _getActualPosition = getActualPosition;
+        /// <param name="getActualRotation">The delegate that returns the actual rotation, of type Func<Quaternion, Quaternion></param>
+        public PlacementLayout(UnityAction repaint, Func<Vector3, Vector3> getActualPosition, Func<Quaternion, Quaternion> getActualRotation) : base(repaint)
+        {
+            _getActualPosition = getActualPosition;
+            _getActualRotation = getActualRotation;
+        }
 
-        public override bool IsShown() => IsToggleGroupShown(_placeGroup.faded);
+        public override bool IsShown() => _placeGroup.target;
 
         public override void SetupOnGUI()
         {
@@ -35,6 +41,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 _layerMask = LayerField("Collidable Layer", "The layer on which the prefab will be placed.", _layerMask);
             }
             EndFadeGroup();
+            HideOtherLayouts(); // Hidding other layouts
         }
 
         public override void Update(Event currentEvent)
@@ -44,13 +51,20 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 if (Physics.Raycast(HandleUtility.GUIPointToWorldRay(currentEvent.mousePosition), out _hit, Mathf.Infinity, 1 << _layerMask)) // Hitting the correct layer
                 {
                     _prefabTemp = _root == null ? PrefabUtility.InstantiatePrefab(_prefab) as Transform : PrefabUtility.InstantiatePrefab(_prefab, _root) as Transform; // Creating the prefab
-                    _prefabTemp.position = /*GetActualPosition(_hit.point)*/ /*_hit.point*/ _getActualPosition(_hit.point); // Placing in hit position
+                    _prefabTemp.position = _getActualPosition(_hit.point); // Placing in hit position
+                    _prefabTemp.rotation = _getActualRotation(_prefabTemp.rotation); // Rotating to the actual rotation
                     Undo.RegisterCreatedObjectUndo(_prefabTemp.gameObject, "Prefab Placement");
                 }
             }
 
-            if (currentEvent.keyCode == KeyCode.U && currentEvent.type == EventType.KeyDown) _placeGroup.target = !_placeGroup.target; // Toggling placement
+            if (currentEvent.keyCode == KeyCode.U && currentEvent.type == EventType.KeyDown)
+            {
+                _placeGroup.target = !_placeGroup.target; // Toggling placement
+                HideOtherLayouts(); // Hidding other layouts
+            }
         }
+
+        public override void Hide() { if (IsShown()) _placeGroup.target = false; }
 
         protected override void SetupOnEnable(UnityAction repaint)
         {
