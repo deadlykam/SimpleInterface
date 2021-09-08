@@ -14,19 +14,9 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private AnimBool _fixedPosGroupY;
         private AnimBool _fixedPosGroupZ;
 
-        public override bool IsShown() => IsToggleGroupShown(_fixedPosGroup.faded);
+        public FixedPositionLayout(UnityAction repaint) : base(repaint){}
 
-        public override void SetupOnEnable(UnityAction repaint)
-        {
-            _fixedPosGroup = new AnimBool(false);
-            _fixedPosGroup.valueChanged.AddListener(repaint);
-            _fixedPosGroupX = new AnimBool(false);
-            _fixedPosGroupX.valueChanged.AddListener(repaint);
-            _fixedPosGroupY = new AnimBool(false);
-            _fixedPosGroupY.valueChanged.AddListener(repaint);
-            _fixedPosGroupZ = new AnimBool(false);
-            _fixedPosGroupZ.valueChanged.AddListener(repaint);
-        }
+        public override bool IsShown() => IsToggleGroupShown(_fixedPosGroup.faded);
 
         public override void SetupOnGUI()
         {
@@ -49,6 +39,18 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             if (IsToggleGroupShown(_fixedPosGroupY.faded)) position.y = _fixedPosY;
             if (IsToggleGroupShown(_fixedPosGroupZ.faded)) position.z = _fixedPosZ;
             return position;
+        }
+
+        protected override void SetupOnEnable(UnityAction repaint)
+        {
+            _fixedPosGroup = new AnimBool(false);
+            _fixedPosGroup.valueChanged.AddListener(repaint);
+            _fixedPosGroupX = new AnimBool(false);
+            _fixedPosGroupX.valueChanged.AddListener(repaint);
+            _fixedPosGroupY = new AnimBool(false);
+            _fixedPosGroupY.valueChanged.AddListener(repaint);
+            _fixedPosGroupZ = new AnimBool(false);
+            _fixedPosGroupZ.valueChanged.AddListener(repaint);
         }
     }
 }
