@@ -9,6 +9,7 @@ namespace KamranWali.SimpleInterface.Editor
         private LayoutManager _manager;
         private BaseLayout _placementLayout;
         private BaseLayout _fixedPositionLayout;
+        private BaseLayout _fixedRotationLayout;
         private Event _event; // Storing current events
 
         [MenuItem("KamranWali/SimpleInterfaceWindow")]
@@ -50,11 +51,15 @@ namespace KamranWali.SimpleInterface.Editor
         {
             _manager = new LayoutManager();
 
-            _placementLayout = new PlacementLayout(Repaint, GetActualPosition);
+            /*===Initializing Layouts===*/
+            _placementLayout = new PlacementLayout(Repaint, GetActualPosition, GetActualRotation);
             _fixedPositionLayout = new FixedPositionLayout(Repaint);
+            _fixedRotationLayout = new FixedRotationLayout(Repaint);
 
+            /*===Adding Layouts===*/
             _manager.AddLayout(_placementLayout);
             _manager.AddLayout(_fixedPositionLayout);
+            _manager.AddLayout(_fixedRotationLayout);
         }
 
         /// <summary>
@@ -66,6 +71,17 @@ namespace KamranWali.SimpleInterface.Editor
         {
             if (_fixedPositionLayout.IsShown()) return _fixedPositionLayout.GetPosition(position); // Returning Fixed Position
             return position; // Returning the actual position
+        }
+
+        /// <summary>
+        /// This method gets the actual rotation for the placement prefab.
+        /// </summary>
+        /// <param name="rotation">The rotation to be modified, of type Quaternion</param>
+        /// <returns>The actual placement rotation, of type Quaternion</returns>
+        private Quaternion GetActualRotation(Quaternion rotation)
+        {
+            if (_fixedRotationLayout.IsShown()) return _fixedRotationLayout.GetRotation(rotation); // Returning Fixed Rotation
+            return rotation;
         }
     }
 }

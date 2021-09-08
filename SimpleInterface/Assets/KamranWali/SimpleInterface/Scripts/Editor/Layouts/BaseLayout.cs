@@ -38,6 +38,13 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         public virtual Vector3 GetPosition(Vector3 position) => position;
 
         /// <summary>
+        /// This method gets the actual rotation.
+        /// </summary>
+        /// <param name="rotation">The rotation used to get the actual rotation, of type Quaternion</param>
+        /// <returns>The actual rotation, of type Quaternion</returns>
+        public virtual Quaternion GetRotation(Quaternion rotation) => rotation;
+
+        /// <summary>
         /// This method initializes the layout's internal objects and MUST be called in OnEnable method.
         /// </summary>
         /// <param name="repaint">For repainting the GUI, of type UnityAction</param>

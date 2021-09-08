@@ -25,8 +25,8 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             if (BeginFadeGroup(_fixedPosGroup.faded))
             {
                 BeginHorizontalLayout(ref _fixedPosGroupX, ref _fixedPosX, "X", "Toggle to keep the X axis fixed", 50f, 1f);
-                BeginHorizontalLayout(ref _fixedPosGroupY, ref _fixedPosY, "Y", "Toggle to keep the X axis fixed", 50f, 1f);
-                BeginHorizontalLayout(ref _fixedPosGroupZ, ref _fixedPosZ, "Z", "Toggle to keep the X axis fixed", 50f, 1f);
+                BeginHorizontalLayout(ref _fixedPosGroupY, ref _fixedPosY, "Y", "Toggle to keep the Y axis fixed", 50f, 1f);
+                BeginHorizontalLayout(ref _fixedPosGroupZ, ref _fixedPosZ, "Z", "Toggle to keep the Z axis fixed", 50f, 1f);
             }
             EndFadeGroup();
         }
@@ -35,9 +35,12 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 
         public override Vector3 GetPosition(Vector3 position)
         {
-            if (IsToggleGroupShown(_fixedPosGroupX.faded)) position.x = _fixedPosX;
+            /*if (IsToggleGroupShown(_fixedPosGroupX.faded)) position.x = _fixedPosX;
             if (IsToggleGroupShown(_fixedPosGroupY.faded)) position.y = _fixedPosY;
-            if (IsToggleGroupShown(_fixedPosGroupZ.faded)) position.z = _fixedPosZ;
+            if (IsToggleGroupShown(_fixedPosGroupZ.faded)) position.z = _fixedPosZ;*/
+            position.Set(IsToggleGroupShown(_fixedPosGroupX.faded) ? _fixedPosX : position.x,
+                         IsToggleGroupShown(_fixedPosGroupY.faded) ? _fixedPosY : position.y,
+                         IsToggleGroupShown(_fixedPosGroupZ.faded) ? _fixedPosZ : position.z);
             return position;
         }
 
