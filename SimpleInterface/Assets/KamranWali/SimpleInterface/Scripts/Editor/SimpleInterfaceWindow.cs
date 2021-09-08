@@ -12,6 +12,7 @@ namespace KamranWali.SimpleInterface.Editor
         private BaseLayout _fixedRotationLayout;
         private BaseLayout _randomRotationLayout;
         private BaseLayout _fixedScaleLayout;
+        private BaseLayout _randomScaleLayout;
         private Event _event; // Storing current events
 
         [MenuItem("KamranWali/SimpleInterfaceWindow")]
@@ -59,10 +60,13 @@ namespace KamranWali.SimpleInterface.Editor
             _fixedRotationLayout = new FixedRotationLayout(Repaint);
             _randomRotationLayout = new RandomRotationLayout(Repaint);
             _fixedScaleLayout = new FixedScaleLayout(Repaint);
+            _randomScaleLayout = new RandomScaleLayout(Repaint);
 
             /*===Linking Opposite Layouts===*/
             _fixedRotationLayout.AddHideLayout(_randomRotationLayout.Hide);
             _randomRotationLayout.AddHideLayout(_fixedRotationLayout.Hide);
+            _fixedScaleLayout.AddHideLayout(_randomScaleLayout.Hide);
+            _randomScaleLayout.AddHideLayout(_fixedScaleLayout.Hide);
 
             /*===Adding Layouts===*/
             _manager.AddLayout(_placementLayout);
@@ -70,6 +74,7 @@ namespace KamranWali.SimpleInterface.Editor
             _manager.AddLayout(_fixedRotationLayout);
             _manager.AddLayout(_randomRotationLayout);
             _manager.AddLayout(_fixedScaleLayout);
+            _manager.AddLayout(_randomScaleLayout);
         }
 
         /// <summary>
@@ -103,6 +108,7 @@ namespace KamranWali.SimpleInterface.Editor
         private Vector3 GetActualScale(Vector3 scale)
         {
             if (_fixedScaleLayout.IsShown()) return _fixedScaleLayout.GetScale(scale);
+            else if (_randomScaleLayout.IsShown()) return _randomScaleLayout.GetScale(scale);
             return scale;
         }
     }

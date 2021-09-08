@@ -36,7 +36,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 
         public override void SetupOnGUI()
         {
-            _placeGroup.target = ToggleLeft("Place Prefab", "Toggle to place prefab. Hotkey = 'U'", _placeGroup);
+            _placeGroup.target = ToggleLeft("Place Prefab (U)", "Toggle to place prefab. Hotkey = 'U'", _placeGroup);
             if (BeginFadeGroup(_placeGroup.faded))
             {
                 _prefab = TransformField("Prefab", "The prefab to spawn", _prefab, false);

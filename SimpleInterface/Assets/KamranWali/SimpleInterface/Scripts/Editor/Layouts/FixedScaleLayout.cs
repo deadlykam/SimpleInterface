@@ -8,17 +8,16 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
     {
         private float _fixedScale;
         private AnimBool _fixedScaleGroup;
+        private Vector3 _vectorOne;
 
-        public FixedScaleLayout(UnityAction repaint) : base(repaint)
-        {
-        }
+        public FixedScaleLayout(UnityAction repaint) : base(repaint) => _vectorOne = new Vector3(1f, 1f, 1f);
 
         public override void Hide() { if (IsShown()) _fixedScaleGroup.target = false; }
         public override bool IsShown() => _fixedScaleGroup.target;
 
         public override void SetupOnGUI()
         {
-            _fixedScaleGroup.target = ToggleLeft("Fixed Scale", "Toggle to place prefab in given fixed Scale. Hotkey = 'K'", _fixedScaleGroup);
+            _fixedScaleGroup.target = ToggleLeft("Fixed Scale (K)", "Toggle to place prefab in given fixed Scale. Hotkey = 'K'", _fixedScaleGroup);
 
             if (BeginFadeGroup(_fixedScaleGroup.faded)) BeginHorizontalLayout(ref _fixedScale, "Scale", "The fixed scale for the prefab.", 25f, 40f);
             EndFadeGroup();
@@ -34,7 +33,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             }
         }
 
-        public override Vector3 GetScale(Vector3 scale) => scale * _fixedScale;
+        public override Vector3 GetScale(Vector3 scale) => _vectorOne * _fixedScale;
 
         protected override void SetupOnEnable(UnityAction repaint)
         {

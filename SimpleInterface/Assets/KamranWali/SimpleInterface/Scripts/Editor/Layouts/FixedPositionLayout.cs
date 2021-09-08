@@ -20,13 +20,13 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 
         public override void SetupOnGUI()
         {
-            _fixedPosGroup.target = ToggleLeft("Fixed Position", "Toggle to place prefab in given fixed Vector3 axis. Hotkey = 'I'", _fixedPosGroup);
+            _fixedPosGroup.target = ToggleLeft("Fixed Position (I)", "Toggle to place prefab in given fixed Vector3 axis. Hotkey = 'I'", _fixedPosGroup);
 
             if (BeginFadeGroup(_fixedPosGroup.faded))
             {
-                BeginHorizontalLayout(ref _fixedPosGroupX, ref _fixedPosX, "X", "Toggle to keep the X axis fixed", 50f, 1f);
-                BeginHorizontalLayout(ref _fixedPosGroupY, ref _fixedPosY, "Y", "Toggle to keep the Y axis fixed", 50f, 1f);
-                BeginHorizontalLayout(ref _fixedPosGroupZ, ref _fixedPosZ, "Z", "Toggle to keep the Z axis fixed", 50f, 1f);
+                BeginHorizontalLayout(ref _fixedPosGroupX, ref _fixedPosX, "X", "Toggle to keep the X axis fixed", 20f, 1f);
+                BeginHorizontalLayout(ref _fixedPosGroupY, ref _fixedPosY, "Y", "Toggle to keep the Y axis fixed", 20f, 1f);
+                BeginHorizontalLayout(ref _fixedPosGroupZ, ref _fixedPosZ, "Z", "Toggle to keep the Z axis fixed", 20f, 1f);
             }
             EndFadeGroup();
             HideOtherLayouts(); // Hidding other layouts
