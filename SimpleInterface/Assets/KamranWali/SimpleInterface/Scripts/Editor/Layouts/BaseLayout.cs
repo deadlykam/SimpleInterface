@@ -8,10 +8,10 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
     public abstract class BaseLayout
     {
         /// <summary>
-        /// This method initializes the layout's internal objects and MUST be called in OnEnable method.
+        /// This method creates the BaseLayout object
         /// </summary>
-        /// <param name="repaint"></param>
-        public abstract void SetupOnEnable(UnityAction repaint);
+        /// <param name="repaint">For repainting the GUI, of type UnityAction</param>
+        public BaseLayout(UnityAction repaint) => SetupOnEnable(repaint);
 
         /// <summary>
         /// This method sets up the layout and MUST be called in OnGUI method.
@@ -36,6 +36,12 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         /// <param name="position">The position used to get the actual position, of type Vector3</param>
         /// <returns>The actual position, of type Vector3</returns>
         public virtual Vector3 GetPosition(Vector3 position) => position;
+
+        /// <summary>
+        /// This method initializes the layout's internal objects and MUST be called in OnEnable method.
+        /// </summary>
+        /// <param name="repaint">For repainting the GUI, of type UnityAction</param>
+        protected abstract void SetupOnEnable(UnityAction repaint);
 
         #region Creation
         protected bool ToggleLeft(string name, string toolTip, AnimBool toggle) => EditorGUILayout.ToggleLeft(new GUIContent(name, toolTip), toggle.target);

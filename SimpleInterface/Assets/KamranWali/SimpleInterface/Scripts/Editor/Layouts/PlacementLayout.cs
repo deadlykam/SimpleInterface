@@ -19,16 +19,11 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         /// <summary>
         /// This constructor creates the PlacementLayout object.
         /// </summary>
+        /// <param name="repaint">For repainting the GUI, of type UnityAction</param>
         /// <param name="getActualPosition">The delegate that returns the actual position, of type Func<Vector3, Vector3></param>
-        public PlacementLayout(Func<Vector3, Vector3> getActualPosition) => _getActualPosition = getActualPosition;
+        public PlacementLayout(UnityAction repaint, Func<Vector3, Vector3> getActualPosition) : base(repaint) => _getActualPosition = getActualPosition;
 
         public override bool IsShown() => IsToggleGroupShown(_placeGroup.faded);
-
-        public override void SetupOnEnable(UnityAction repaint)
-        {
-            _placeGroup = new AnimBool(true);
-            _placeGroup.valueChanged.AddListener(repaint);
-        }
 
         public override void SetupOnGUI()
         {
@@ -55,6 +50,12 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             }
 
             if (currentEvent.keyCode == KeyCode.U && currentEvent.type == EventType.KeyDown) _placeGroup.target = !_placeGroup.target; // Toggling placement
+        }
+
+        protected override void SetupOnEnable(UnityAction repaint)
+        {
+            _placeGroup = new AnimBool(true);
+            _placeGroup.valueChanged.AddListener(repaint);
         }
     }
 }
