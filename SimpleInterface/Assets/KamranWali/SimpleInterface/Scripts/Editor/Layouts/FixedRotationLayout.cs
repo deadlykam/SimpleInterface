@@ -43,13 +43,9 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 
         public override void Hide() { if (IsShown()) _fixedRotGroup.target = false; }
 
-        public override Quaternion GetRotation(Quaternion rotation)
-        {
-            rotation = Quaternion.Euler(IsToggleGroupShown(_fixedRotGroupX.faded) ? _fixedRotX : rotation.eulerAngles.x,
-                                        IsToggleGroupShown(_fixedRotGroupY.faded) ? _fixedRotY : rotation.eulerAngles.y,
-                                        IsToggleGroupShown(_fixedRotGroupZ.faded) ? _fixedRotZ : rotation.eulerAngles.z);
-            return rotation;
-        }
+        public override Quaternion GetRotation(Quaternion rotation) => rotation = Quaternion.Euler(IsToggleGroupShown(_fixedRotGroupX.faded) ? _fixedRotX : rotation.eulerAngles.x,
+                                                                                                   IsToggleGroupShown(_fixedRotGroupY.faded) ? _fixedRotY : rotation.eulerAngles.y,
+                                                                                                   IsToggleGroupShown(_fixedRotGroupZ.faded) ? _fixedRotZ : rotation.eulerAngles.z);
 
         protected override void SetupOnEnable(UnityAction repaint)
         {

@@ -37,6 +37,13 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         public virtual Quaternion GetRotation(Quaternion rotation) => rotation;
 
         /// <summary>
+        /// This method gets the actual scale.
+        /// </summary>
+        /// <param name="scale">The scale used to get the actual scale, of type Vector3</param>
+        /// <returns>The actual scale, of type Vector3</returns>
+        public virtual Vector3 GetScale(Vector3 scale) => scale;
+
+        /// <summary>
         /// This method sets up the layout and MUST be called in OnGUI method.
         /// </summary>
         public abstract void SetupOnGUI();
@@ -73,6 +80,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected bool ToggleLeft(string name, string toolTip, AnimBool toggle) => EditorGUILayout.ToggleLeft(new GUIContent(name, toolTip), toggle.target);
         protected Transform TransformField(string name, string toolTip, Transform obj, bool isHierarchy) => EditorGUILayout.ObjectField(new GUIContent(name, toolTip), obj, typeof(Transform), isHierarchy) as Transform;
         protected int LayerField(string name, string toolTip, LayerMask layerMask) => EditorGUILayout.LayerField(new GUIContent(name, toolTip), layerMask);
+        protected float FloatField(string name, string toolTip, float obj) => EditorGUILayout.FloatField(new GUIContent(name, toolTip), obj);
         protected float FloatField(float obj) => EditorGUILayout.FloatField(obj);
         #endregion
 
@@ -81,6 +89,21 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected void EndFadeGroup() => EditorGUILayout.EndFadeGroup();
         protected void EndHorizontal() => GUILayout.EndHorizontal();
         #endregion
+
+        /// <summary>
+        /// This method creates a horizontal layout.
+        /// </summary>
+        /// <param name="obj">The reference to the float, of type float</param>
+        /// <param name="space">The space from the left, of type float</param>
+        /// <param name="width">The gap between fields, of type float</param>
+        protected void BeginHorizontalLayout(ref float obj, string name, string toolTip, float space, float width)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(space);
+            EditorGUIUtility.labelWidth = width;
+            obj = FloatField(name, toolTip, obj);
+            EndHorizontal();
+        }
 
         /// <summary>
         /// This method creates a horizontal layout.

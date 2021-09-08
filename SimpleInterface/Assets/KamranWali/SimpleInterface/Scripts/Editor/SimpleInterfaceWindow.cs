@@ -11,6 +11,7 @@ namespace KamranWali.SimpleInterface.Editor
         private BaseLayout _fixedPositionLayout;
         private BaseLayout _fixedRotationLayout;
         private BaseLayout _randomRotationLayout;
+        private BaseLayout _fixedScaleLayout;
         private Event _event; // Storing current events
 
         [MenuItem("KamranWali/SimpleInterfaceWindow")]
@@ -53,10 +54,11 @@ namespace KamranWali.SimpleInterface.Editor
             _manager = new LayoutManager();
 
             /*===Initializing Layouts===*/
-            _placementLayout = new PlacementLayout(Repaint, GetActualPosition, GetActualRotation);
+            _placementLayout = new PlacementLayout(Repaint, GetActualPosition, GetActualRotation, GetActualScale);
             _fixedPositionLayout = new FixedPositionLayout(Repaint);
             _fixedRotationLayout = new FixedRotationLayout(Repaint);
             _randomRotationLayout = new RandomRotationLayout(Repaint);
+            _fixedScaleLayout = new FixedScaleLayout(Repaint);
 
             /*===Linking Opposite Layouts===*/
             _fixedRotationLayout.AddHideLayout(_randomRotationLayout.Hide);
@@ -67,6 +69,7 @@ namespace KamranWali.SimpleInterface.Editor
             _manager.AddLayout(_fixedPositionLayout);
             _manager.AddLayout(_fixedRotationLayout);
             _manager.AddLayout(_randomRotationLayout);
+            _manager.AddLayout(_fixedScaleLayout);
         }
 
         /// <summary>
@@ -90,6 +93,17 @@ namespace KamranWali.SimpleInterface.Editor
             if (_fixedRotationLayout.IsShown()) return _fixedRotationLayout.GetRotation(rotation); // Returning Fixed Rotation
             else if (_randomRotationLayout.IsShown()) return _randomRotationLayout.GetRotation(rotation); // Returning Random Rotation
             return rotation;
+        }
+
+        /// <summary>
+        /// This method gets the actual scale for the placement prefab.
+        /// </summary>
+        /// <param name="scale">The scale to be modified, of type Vector3</param>
+        /// <returns>The actual placement scale, of type Vector3</returns>
+        private Vector3 GetActualScale(Vector3 scale)
+        {
+            if (_fixedScaleLayout.IsShown()) return _fixedScaleLayout.GetScale(scale);
+            return scale;
         }
     }
 }

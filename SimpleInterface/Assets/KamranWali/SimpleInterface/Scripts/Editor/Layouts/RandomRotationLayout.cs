@@ -47,14 +47,9 @@ namespace KamranWali.SimpleInterface.Editor.Layouts {
 
         public override void Hide() { if (IsShown()) _randomRotGroup.target = false; }
 
-        public override Quaternion GetRotation(Quaternion rotation)
-        {
-            rotation = Quaternion.Euler(IsToggleGroupShown(_rangeRotGroupX.faded) ? Random.Range(_rangeRotXMin, _rangeRotXMax) : rotation.eulerAngles.x,
-                                        IsToggleGroupShown(_rangeRotGroupY.faded) ? Random.Range(_rangeRotYMin, _rangeRotYMax) : rotation.eulerAngles.y,
-                                        IsToggleGroupShown(_rangeRotGroupZ.faded) ? Random.Range(_rangeRotZMin, _rangeRotZMax) : rotation.eulerAngles.z);
-
-            return rotation;
-        }
+        public override Quaternion GetRotation(Quaternion rotation) => rotation = Quaternion.Euler(IsToggleGroupShown(_rangeRotGroupX.faded) ? Random.Range(_rangeRotXMin, _rangeRotXMax) : rotation.eulerAngles.x,
+                                                                                                   IsToggleGroupShown(_rangeRotGroupY.faded) ? Random.Range(_rangeRotYMin, _rangeRotYMax) : rotation.eulerAngles.y,
+                                                                                                   IsToggleGroupShown(_rangeRotGroupZ.faded) ? Random.Range(_rangeRotZMin, _rangeRotZMax) : rotation.eulerAngles.z);
 
         protected override void SetupOnEnable(UnityAction repaint)
         {
