@@ -8,13 +8,18 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 {
     public abstract class BaseLayout
     {
+        protected UnityAction repaint;
         private Action _hideLayouts; // Layouts that should be hidden when the this layout is shown
 
         /// <summary>
         /// This method creates the BaseLayout object
         /// </summary>
         /// <param name="repaint">For repainting the GUI, of type UnityAction</param>
-        public BaseLayout(UnityAction repaint) => SetupOnEnable(repaint);
+        public BaseLayout(UnityAction repaint)
+        {
+            this.repaint = repaint;
+            SetupOnEnable();
+        }
 
         /// <summary>
         /// This method adds the hide method of the layout that should be hidden when the current layout is shown.
@@ -73,8 +78,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         /// <summary>
         /// This method initializes the layout's internal objects and MUST be called in OnEnable method.
         /// </summary>
-        /// <param name="repaint">For repainting the GUI, of type UnityAction</param>
-        protected abstract void SetupOnEnable(UnityAction repaint);
+        protected abstract void SetupOnEnable();
 
         #region Creation
         protected bool ToggleLeft(string name, string toolTip, AnimBool toggle) => EditorGUILayout.ToggleLeft(new GUIContent(name, toolTip), toggle.target);
@@ -82,12 +86,22 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected int LayerField(string name, string toolTip, LayerMask layerMask) => EditorGUILayout.LayerField(new GUIContent(name, toolTip), layerMask);
         protected float FloatField(string name, string toolTip, float obj) => EditorGUILayout.FloatField(new GUIContent(name, toolTip), obj);
         protected float FloatField(float obj) => EditorGUILayout.FloatField(obj);
+        protected int IntField(string name, string toolTip, int obj) => EditorGUILayout.IntField(new GUIContent(name, toolTip), obj);
+        protected int IntField(int obj) => EditorGUILayout.IntField(obj);
+        protected void LabelField(string name, string tooltip) => EditorGUILayout.LabelField(new GUIContent(name, tooltip));
+        protected void LabelField(string name, string tooltip, GUIStyle style) => EditorGUILayout.LabelField(new GUIContent(name, tooltip), style);
+        protected bool Button(string name, string tooltip) => GUILayout.Button(new GUIContent(name, tooltip));
         #endregion
 
         #region Layout
         protected bool BeginFadeGroup(float value) => EditorGUILayout.BeginFadeGroup(value);
         protected void EndFadeGroup() => EditorGUILayout.EndFadeGroup();
+        protected void BeginHorizontal() => GUILayout.BeginHorizontal();
         protected void EndHorizontal() => GUILayout.EndHorizontal();
+        protected void BeginVertical() => GUILayout.BeginVertical();
+        protected void EndVertical() => GUILayout.EndVertical();
+        protected void Space(float space) => GUILayout.Space(space);
+        protected void LabelWidth(float width) => EditorGUIUtility.labelWidth = width;
         #endregion
 
         /// <summary>

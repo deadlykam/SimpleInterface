@@ -47,7 +47,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                                                                                                    IsToggleGroupShown(_fixedRotGroupY.faded) ? _fixedRotY : rotation.eulerAngles.y,
                                                                                                    IsToggleGroupShown(_fixedRotGroupZ.faded) ? _fixedRotZ : rotation.eulerAngles.z);
 
-        protected override void SetupOnEnable(UnityAction repaint)
+        protected override void SetupOnEnable()
         {
             _fixedRotGroup = new AnimBool(false);
             _fixedRotGroup.valueChanged.AddListener(repaint);

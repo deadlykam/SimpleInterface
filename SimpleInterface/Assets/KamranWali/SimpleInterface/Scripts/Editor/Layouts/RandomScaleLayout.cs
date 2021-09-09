@@ -35,7 +35,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 
         public override Vector3 GetScale(Vector3 scale) => _vectorOne * Random.Range(_randomScaleMin, _randomScaleMax);
 
-        protected override void SetupOnEnable(UnityAction repaint)
+        protected override void SetupOnEnable()
         {
             _randomScaleGroup = new AnimBool(false);
             _randomScaleGroup.valueChanged.AddListener(repaint);

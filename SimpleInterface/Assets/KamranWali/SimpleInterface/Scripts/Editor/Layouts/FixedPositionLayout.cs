@@ -51,7 +51,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             return position;
         }
 
-        protected override void SetupOnEnable(UnityAction repaint)
+        protected override void SetupOnEnable()
         {
             _fixedPosGroup = new AnimBool(false);
             _fixedPosGroup.valueChanged.AddListener(repaint);
