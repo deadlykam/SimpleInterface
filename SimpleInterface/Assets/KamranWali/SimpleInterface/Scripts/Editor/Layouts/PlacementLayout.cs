@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
@@ -8,19 +10,26 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 {
     public class PlacementLayout : BaseLayout
     {
-        private Transform _prefab;
+        private string _path;
         private Transform _root;
         private LayerMask _layerMask;
         private AnimBool _placeGroup;
         private AnimBool _placeLimitGroup;
         private int _maxPlace;
+        private Vector2 _prefabsScroll;
+        private int _selPrefabGrid;
         private RaycastHit _hit; // Storing ray hit
+        private Transform _prefabValidate;
         private Transform _prefabTemp; // For storing created prefabs
         private Func<Vector3, Vector3> _getActualPosition;
         private Func<Quaternion, Quaternion> _getActualRotation;
         private Func<Vector3, Vector3> _getActualScale;
         private int _curPlace;
         private readonly int _defaultMinPlace; // The minimum default value for placement limit
+        private string[] _objectNames;
+        private List<Transform> _prefabs;
+        private List<string> _prefabsNames;
+        private int _prefabCounter;
 
         /// <summary>
         /// This constructor creates the PlacementLayout object.
@@ -35,6 +44,9 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             _getActualRotation = getActualRotation;
             _getActualScale = getActualScale;
             _defaultMinPlace = 1; // Setting the default min placement limit value
+
+            _prefabs = new List<Transform>();
+            _prefabsNames = new List<string>();
         }
 
         public override bool IsShown() => _placeGroup.target;
@@ -46,8 +58,17 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             {
                 BeginHorizontal();
                 Space(20f);
-                _prefab = TransformField("Prefab", "The prefab to spawn", _prefab, false);
+                _path = TextField("Path", "The path is the folder containing the prefabs", _path);
                 EndHorizontal();
+
+                BeginHorizontal();
+                Space(20f);
+                if (Button("Load Prefabs", "This button will load all the prefabs in the give path.")) LoadPrefabs();
+                EndHorizontal();
+
+                _prefabsScroll = BeginScrollView(_prefabsScroll, 100f);
+                _selPrefabGrid = SelectionGrid(_selPrefabGrid, _prefabsNames.ToArray(), 2);
+                EndScrollView();
 
                 BeginHorizontal();
                 Space(20f);
@@ -107,7 +128,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             {
                 if (Physics.Raycast(HandleUtility.GUIPointToWorldRay(currentEvent.mousePosition), out _hit, Mathf.Infinity, 1 << _layerMask)) // Hitting the correct layer
                 {
-                    _prefabTemp = _root == null ? PrefabUtility.InstantiatePrefab(_prefab) as Transform : PrefabUtility.InstantiatePrefab(_prefab, _root) as Transform; // Creating the prefab
+                    _prefabTemp = _root == null ? PrefabUtility.InstantiatePrefab(_prefabs[_selPrefabGrid]) as Transform : PrefabUtility.InstantiatePrefab(_prefabs[_selPrefabGrid], _root) as Transform; // Creating the prefab
                     _prefabTemp.position = _getActualPosition(_hit.point); // Placing in hit position
                     _prefabTemp.rotation = _getActualRotation(_prefabTemp.rotation); // Rotating to the actual rotation
                     _prefabTemp.localScale = _getActualScale(_prefabTemp.localScale); // Setting the actual scale
@@ -149,11 +170,41 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         /// This method checks if a prefab is placeable.
         /// </summary>
         /// <returns>True means placeable, false otherwise, of type bool</returns>
-        private bool IsPlaceable() => _placeLimitGroup.target ? _curPlace < _maxPlace : true;
+        private bool IsPlaceable() => (_placeLimitGroup.target ? _curPlace < _maxPlace : true) && _prefabs.Count != 0;
 
         /// <summary>
         /// This method resets the placement counter.
         /// </summary>
         private void ResetPlacementCounter() => _curPlace = 0;
+
+        /// <summary>
+        /// This method loads a new set of prefabs.
+        /// </summary>
+        private void LoadPrefabs()
+        {
+            _prefabs.Clear(); // Clearing all prefabs
+            _prefabsNames.Clear(); // Clearing all prefab names
+
+            if (Directory.Exists(_path)) // Checking if the path exists
+            {
+                _objectNames = Directory.GetFiles(_path); // Getting all object names
+
+                if (_objectNames != null && _objectNames.Length > 0) // Checking if any object found
+                {
+                    for (_prefabCounter = 0; _prefabCounter < _objectNames.Length; _prefabCounter++) // Loop for validating path and adding prefabs
+                    {
+                        _objectNames[_prefabCounter] = _objectNames[_prefabCounter].Replace("\\", "/");
+                        _prefabValidate = AssetDatabase.LoadAssetAtPath(_objectNames[_prefabCounter], typeof(Transform)) as Transform;
+
+                        if (_prefabValidate != null) // Checking if the current object is NOT null and a prefab.
+                        {
+                            _prefabs.Add(_prefabValidate);
+                            _prefabsNames.Add(_prefabValidate.name);
+                        }
+                    }
+                    _selPrefabGrid = 0; // Setting selection to the first selection
+                }
+            }
+        }
     }
 }
