@@ -51,7 +51,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts {
                                                                                                    IsToggleGroupShown(_rangeRotGroupY.faded) ? Random.Range(_rangeRotYMin, _rangeRotYMax) : rotation.eulerAngles.y,
                                                                                                    IsToggleGroupShown(_rangeRotGroupZ.faded) ? Random.Range(_rangeRotZMin, _rangeRotZMax) : rotation.eulerAngles.z);
 
-        protected override void SetupOnEnable(UnityAction repaint)
+        protected override void SetupOnEnable()
         {
             _randomRotGroup = new AnimBool(false);
             _randomRotGroup.valueChanged.AddListener(repaint);

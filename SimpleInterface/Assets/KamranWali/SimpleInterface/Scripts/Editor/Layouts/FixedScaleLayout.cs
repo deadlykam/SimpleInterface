@@ -35,7 +35,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 
         public override Vector3 GetScale(Vector3 scale) => _vectorOne * _fixedScale;
 
-        protected override void SetupOnEnable(UnityAction repaint)
+        protected override void SetupOnEnable()
         {
             _fixedScaleGroup = new AnimBool(false);
             _fixedScaleGroup.valueChanged.AddListener(repaint);
