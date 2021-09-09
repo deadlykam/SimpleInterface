@@ -66,6 +66,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 if (Button("Load Prefabs", "This button will load all the prefabs in the give path.")) LoadPrefabs();
                 EndHorizontal();
 
+                Space(10f);
                 _prefabsScroll = BeginScrollView(_prefabsScroll, 100f);
                 _selPrefabGrid = SelectionGrid(_selPrefabGrid, _prefabsNames.ToArray(), 2);
                 EndScrollView();
