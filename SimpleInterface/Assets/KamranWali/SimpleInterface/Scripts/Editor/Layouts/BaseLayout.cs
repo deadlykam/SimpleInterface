@@ -81,6 +81,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected abstract void SetupOnEnable();
 
         #region Creation
+        protected bool Toggle(string name, string tooltip, bool obj) => EditorGUILayout.Toggle(new GUIContent(name, tooltip), obj);
         protected bool ToggleLeft(string name, string toolTip, AnimBool toggle) => EditorGUILayout.ToggleLeft(new GUIContent(name, toolTip), toggle.target);
         protected Transform TransformField(string name, string toolTip, Transform obj, bool isHierarchy) => EditorGUILayout.ObjectField(new GUIContent(name, toolTip), obj, typeof(Transform), isHierarchy) as Transform;
         protected int LayerField(string name, string toolTip, LayerMask layerMask) => EditorGUILayout.LayerField(new GUIContent(name, toolTip), layerMask);

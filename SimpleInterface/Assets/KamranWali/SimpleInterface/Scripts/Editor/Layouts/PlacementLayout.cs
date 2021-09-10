@@ -23,6 +23,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private UnityEditor.Editor _preview;
         private GUIStyle _previewColour;
         private GameObject _previewPrefab; // For storing the selected prefab
+        private bool _isDrag;
 
         // Internal Fields
         private RaycastHit _hit; // Storing ray hit
@@ -39,6 +40,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private List<string> _prefabsNames;
         private int _prefabCounter;
         private PrefabPathSearch _prefabSearch;
+        private Tool _currentTool;
         private readonly int _defaultMinPlace; // The minimum default value for placement limit
         private readonly string _defaultPath; // The default path if no path given
 
@@ -57,6 +59,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             _prefabSearch = new PrefabPathSearch();
             _prefabs = new List<Transform>();
             _prefabsNames = new List<string>();
+            _currentTool = Tool.Transform; // Setting the starting tool
             _defaultMinPlace = 1; // Setting the default min placement limit value
             _defaultPath = "Assets";
         }
@@ -172,6 +175,22 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 }
                 EndFadeGroup();
                 EndHorizontal();
+
+                BeginHorizontal();
+                Space(20f);
+                LabelWidth(50f);
+                _isDrag = Toggle("Drag(M)", "For enabling/disabling drag placement", _isDrag);
+                if (_isDrag && Tools.current != Tool.View) // Condition for drag mode being enabled
+                {
+                    _currentTool = Tools.current; // Saving the current tool
+                    Tools.current = Tool.View; // Drag mode enabled
+                }
+                else if (!_isDrag && Tools.current != _currentTool && _currentTool != Tool.None) // Condition to set back the current tool
+                {
+                    Tools.current = _currentTool; // Setting the current tool back
+                    _currentTool = Tool.None; // Removing saved tool
+                }
+                EndHorizontal();
             }
             EndFadeGroup();
             HideOtherLayouts(); // Hidding other layouts
@@ -179,7 +198,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 
         public override void Update(Event currentEvent)
         {
-            if (IsToggleGroupShown(_placeGroup.faded) && currentEvent.type == EventType.MouseDown && currentEvent.button == 0 && IsPlaceable())
+            if (IsToggleGroupShown(_placeGroup.faded) && (currentEvent.type == EventType.MouseDown || (currentEvent.type == EventType.MouseDrag && _isDrag)) && currentEvent.button == 0 && IsPlaceable())
             {
                 if (Physics.Raycast(HandleUtility.GUIPointToWorldRay(currentEvent.mousePosition), out _hit, Mathf.Infinity, 1 << _layerMask)) // Hitting the correct layer
                 {
@@ -194,6 +213,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                         repaint(); // Repainting to update the UI
                     }
 
+                    if (_isDrag) currentEvent.Use(); // Drag mode enabled
                     Undo.RegisterCreatedObjectUndo(_prefabTemp.gameObject, "Prefab Placement");
                 }
             }
@@ -203,10 +223,16 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 _placeGroup.target = !_placeGroup.target; // Toggling placement
                 HideOtherLayouts(); // Hidding other layouts
             }
-            else if (currentEvent.keyCode == KeyCode.B && currentEvent.type == EventType.KeyDown) _placeLimitGroup.target = !_placeLimitGroup.target;
-            else if (currentEvent.keyCode == KeyCode.N && currentEvent.type == EventType.KeyDown && _placeLimitGroup.target)
+            else if (currentEvent.keyCode == KeyCode.B && currentEvent.type == EventType.KeyDown) _placeLimitGroup.target = !_placeLimitGroup.target; // Toggling limit placement mode
+            else if (currentEvent.keyCode == KeyCode.N && currentEvent.type == EventType.KeyDown && _placeLimitGroup.target) // Resetting limit placement
             {
                 ResetPlacementCounter();
+                repaint();
+            }
+
+            else if (currentEvent.keyCode == KeyCode.M && currentEvent.type == EventType.KeyDown) // Toggling drag mode
+            {
+                _isDrag = !_isDrag;
                 repaint();
             }
         }
