@@ -90,7 +90,12 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected int IntField(int obj) => EditorGUILayout.IntField(obj);
         protected void LabelField(string name, string tooltip) => EditorGUILayout.LabelField(new GUIContent(name, tooltip));
         protected void LabelField(string name, string tooltip, GUIStyle style) => EditorGUILayout.LabelField(new GUIContent(name, tooltip), style);
+        protected string TextField(string name, string tooltip, string obj) => EditorGUILayout.TextField(new GUIContent(name, tooltip), obj);
         protected bool Button(string name, string tooltip) => GUILayout.Button(new GUIContent(name, tooltip));
+        protected int SelectionGrid(int obj, string[] objs, int columns) => GUILayout.SelectionGrid(obj, objs, columns);
+        protected Vector2 BeginScrollView(Vector2 obj, float width, float height) => EditorGUILayout.BeginScrollView(obj, GUILayout.Width(width), GUILayout.Height(height));
+        protected Vector2 BeginScrollView(Vector2 obj, float height) => EditorGUILayout.BeginScrollView(obj, GUILayout.ExpandWidth(true), GUILayout.Height(height));
+        protected int Popup(int obj, string name, string tooltip, string[] displayData) => EditorGUILayout.Popup(new GUIContent(name, tooltip), obj, displayData);
         #endregion
 
         #region Layout
@@ -100,6 +105,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected void EndHorizontal() => GUILayout.EndHorizontal();
         protected void BeginVertical() => GUILayout.BeginVertical();
         protected void EndVertical() => GUILayout.EndVertical();
+        protected void EndScrollView() => EditorGUILayout.EndScrollView();
         protected void Space(float space) => GUILayout.Space(space);
         protected void LabelWidth(float width) => EditorGUIUtility.labelWidth = width;
         #endregion
