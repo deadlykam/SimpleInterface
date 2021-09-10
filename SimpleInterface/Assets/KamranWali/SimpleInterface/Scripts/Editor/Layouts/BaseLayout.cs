@@ -95,6 +95,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected int SelectionGrid(int obj, string[] objs, int columns) => GUILayout.SelectionGrid(obj, objs, columns);
         protected Vector2 BeginScrollView(Vector2 obj, float width, float height) => EditorGUILayout.BeginScrollView(obj, GUILayout.Width(width), GUILayout.Height(height));
         protected Vector2 BeginScrollView(Vector2 obj, float height) => EditorGUILayout.BeginScrollView(obj, GUILayout.ExpandWidth(true), GUILayout.Height(height));
+        protected int Popup(int obj, string name, string tooltip, string[] displayData) => EditorGUILayout.Popup(new GUIContent(name, tooltip), obj, displayData);
         #endregion
 
         #region Layout
