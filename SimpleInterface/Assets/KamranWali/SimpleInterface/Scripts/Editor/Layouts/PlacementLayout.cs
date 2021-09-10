@@ -32,6 +32,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private Func<Vector3, Vector3> _getActualPosition;
         private Func<Quaternion, Quaternion> _getActualRotation;
         private Func<Vector3, Vector3> _getActualScale;
+        private Func<bool> _isOffsetMode;
         private int _curPlace;
         private string[] _paths;
         private string[] _objectNames;
@@ -41,6 +42,8 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private int _prefabCounter;
         private PrefabPathSearch _prefabSearch;
         private Tool _currentTool;
+        private Vector3 _pos; // The position to place the prefab
+        private Vector3 _offsetPos; // Needed to verify offset position
         private readonly int _defaultMinPlace; // The minimum default value for placement limit
         private readonly string _defaultPath; // The default path if no path given
 
@@ -51,11 +54,13 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         /// <param name="getActualPosition">The delegate that returns the actual position, of type Func<Vector3, Vector3></param>
         /// <param name="getActualRotation">The delegate that returns the actual rotation, of type Func<Quaternion, Quaternion></param>
         /// <param name="getActualScale">The delegate that returns the actual scale, of type Func<Vector3, Vector3></param>
-        public PlacementLayout(UnityAction repaint, Func<Vector3, Vector3> getActualPosition, Func<Quaternion, Quaternion> getActualRotation, Func<Vector3, Vector3> getActualScale) : base(repaint)
+        /// <param name="isOffsetMode">The delegate to check if offset mode is enabled/disabled, of type Func<bool></param>
+        public PlacementLayout(UnityAction repaint, Func<Vector3, Vector3> getActualPosition, Func<Quaternion, Quaternion> getActualRotation, Func<Vector3, Vector3> getActualScale, Func<bool> isOffsetMode) : base(repaint)
         {
             _getActualPosition = getActualPosition;
             _getActualRotation = getActualRotation;
             _getActualScale = getActualScale;
+            _isOffsetMode = isOffsetMode;
             _prefabSearch = new PrefabPathSearch();
             _prefabs = new List<Transform>();
             _prefabsNames = new List<string>();
@@ -201,20 +206,27 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             if (IsToggleGroupShown(_placeGroup.faded) && (currentEvent.type == EventType.MouseDown || (currentEvent.type == EventType.MouseDrag && _isDrag)) && currentEvent.button == 0 && IsPlaceable())
             {
                 if (Physics.Raycast(HandleUtility.GUIPointToWorldRay(currentEvent.mousePosition), out _hit, Mathf.Infinity, 1 << _layerMask)) // Hitting the correct layer
-                {
-                    _prefabTemp = _root == null ? PrefabUtility.InstantiatePrefab(GetSelectedPrefab()) as Transform : PrefabUtility.InstantiatePrefab(GetSelectedPrefab(), _root) as Transform; // Creating the prefab
-                    _prefabTemp.position = _getActualPosition(_hit.point); // Placing in hit position
-                    _prefabTemp.rotation = _getActualRotation(_prefabTemp.rotation); // Rotating to the actual rotation
-                    _prefabTemp.localScale = _getActualScale(_prefabTemp.localScale); // Setting the actual scale
+                {                    
+                    _pos = _getActualPosition(_hit.point); // Getting the actual position
 
-                    if (_placeLimitGroup.target) // Condition to check if limit placement mode activated
+                    if (!_isOffsetMode() || (_pos != _offsetPos)) // Condition to check if Normal Mode or Offset Mode is enabled
                     {
-                        _curPlace = (_curPlace + 1) > _maxPlace ? _maxPlace : _curPlace + 1;
-                        repaint(); // Repainting to update the UI
+                        _prefabTemp = _root == null ? PrefabUtility.InstantiatePrefab(GetSelectedPrefab()) as Transform : PrefabUtility.InstantiatePrefab(GetSelectedPrefab(), _root) as Transform; // Creating the prefab
+                        _prefabTemp.position = _pos; // Placing in hit position
+                        _prefabTemp.rotation = _getActualRotation(_prefabTemp.rotation); // Rotating to the actual rotation
+                        _prefabTemp.localScale = _getActualScale(_prefabTemp.localScale); // Setting the actual scale
+
+                        if (_placeLimitGroup.target) // Condition to check if limit placement mode activated
+                        {
+                            _curPlace = (_curPlace + 1) > _maxPlace ? _maxPlace : _curPlace + 1;
+                            repaint(); // Repainting to update the UI
+                        }
+
+                        if (_isOffsetMode()) _offsetPos = _pos; // Updating offset position
+                        if (_prefabTemp.gameObject != null) Undo.RegisterCreatedObjectUndo(_prefabTemp.gameObject, "Prefab Placement"); // Check if prefab has NOT been destroyed for Undo
                     }
 
                     if (_isDrag) currentEvent.Use(); // Drag mode enabled
-                    Undo.RegisterCreatedObjectUndo(_prefabTemp.gameObject, "Prefab Placement");
                 }
             }
 

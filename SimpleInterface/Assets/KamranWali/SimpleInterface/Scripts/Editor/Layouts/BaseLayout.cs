@@ -28,6 +28,16 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         public void AddHideLayout(Action hideLayout) => _hideLayouts += hideLayout;
 
         /// <summary>
+        /// This method makes the give layout hide when this layout is shown and vice versa.
+        /// </summary>
+        /// <param name="layout">The layout to hide when this layout is shown and vice versa, of type BaseLayout</param>
+        public void AddHideLayout(BaseLayout layout)
+        {
+            _hideLayouts += layout.Hide;
+            layout.AddHideLayout(Hide);
+        }
+
+        /// <summary>
         /// This method gets the actual position.
         /// </summary>
         /// <param name="position">The position used to get the actual position, of type Vector3</param>
