@@ -18,6 +18,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private int _maxPlace;
         private Vector2 _prefabsScroll;
         private int _selPrefabGrid;
+        private int _selPath;
         private RaycastHit _hit; // Storing ray hit
         private Transform _prefabValidate;
         private Transform _prefabTemp; // For storing created prefabs
@@ -25,11 +26,15 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private Func<Quaternion, Quaternion> _getActualRotation;
         private Func<Vector3, Vector3> _getActualScale;
         private int _curPlace;
-        private readonly int _defaultMinPlace; // The minimum default value for placement limit
+        private string[] _paths;
         private string[] _objectNames;
+        private int _curPath;
         private List<Transform> _prefabs;
         private List<string> _prefabsNames;
         private int _prefabCounter;
+        private PrefabPathSearch _prefabSearch;
+        private readonly int _defaultMinPlace; // The minimum default value for placement limit
+        private readonly string _defaultPath; // The default path if no path given
 
         /// <summary>
         /// This constructor creates the PlacementLayout object.
@@ -43,10 +48,11 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             _getActualPosition = getActualPosition;
             _getActualRotation = getActualRotation;
             _getActualScale = getActualScale;
-            _defaultMinPlace = 1; // Setting the default min placement limit value
-
+            _prefabSearch = new PrefabPathSearch();
             _prefabs = new List<Transform>();
             _prefabsNames = new List<string>();
+            _defaultMinPlace = 1; // Setting the default min placement limit value
+            _defaultPath = "Assets";
         }
 
         public override bool IsShown() => _placeGroup.target;
@@ -58,12 +64,31 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             {
                 BeginHorizontal();
                 Space(20f);
-                _path = TextField("Path", "The path is the folder containing the prefabs", _path);
+                _path = TextField("Path", "The path is the search location point from which all the prefabs will be found. Keeping it empty will start from 'Assets' folder which is the main folder. Providing a location point will reduce the time taken for searching.", _path);
                 EndHorizontal();
 
                 BeginHorizontal();
                 Space(20f);
-                if (Button("Load Prefabs", "This button will load all the prefabs in the give path.")) LoadPrefabs();
+                if (Button("Load Prefabs", "This button will search and load all the prefabs."))
+                {
+                    _prefabSearch.SearchAllPrefabPaths(string.IsNullOrEmpty(_path) ? _defaultPath : _path);
+                    _paths = _prefabSearch.GetPrefabPaths();
+                    _selPath = 0; // Resetting the drop down selection
+                    _curPath = -1; // Setting the prefabs to be updated in the first change call
+                }
+                EndHorizontal();
+
+                BeginHorizontal();
+                Space(20f);
+                LabelWidth(90f);
+                _selPath = Popup(_selPath, "Prefab Paths", "Select a prefab path to load prefabs from.", IsPathsFound() ? _prefabSearch.GetPathNames() : new string[] { "None" });
+                
+                if (IsPathsFound() && _curPath != _selPath) // Condition for loading the prefabs
+                {
+                    LoadPrefabs(_paths[_selPath]);
+                    _curPath = _selPath; // Updating the current path index
+                }
+
                 EndHorizontal();
 
                 Space(10f);
@@ -181,14 +206,15 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         /// <summary>
         /// This method loads a new set of prefabs.
         /// </summary>
-        private void LoadPrefabs()
+        /// <param name="path">The path from which to load the prefabs, of type string</param>
+        private void LoadPrefabs(string path)
         {
             _prefabs.Clear(); // Clearing all prefabs
             _prefabsNames.Clear(); // Clearing all prefab names
 
-            if (Directory.Exists(_path)) // Checking if the path exists
+            if (Directory.Exists(path)) // Checking if the path exists
             {
-                _objectNames = Directory.GetFiles(_path); // Getting all object names
+                _objectNames = Directory.GetFiles(path, "*.prefab"); // Getting all object names
 
                 if (_objectNames != null && _objectNames.Length > 0) // Checking if any object found
                 {
@@ -207,5 +233,11 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 }
             }
         }
+
+        /// <summary>
+        /// This method checks if the path has been loaded.
+        /// </summary>
+        /// <returns>True means loaded, false otherwise, of type bool</returns>
+        private bool IsPathsFound() => _paths != null && _paths.Length != 0;
     }
 }
