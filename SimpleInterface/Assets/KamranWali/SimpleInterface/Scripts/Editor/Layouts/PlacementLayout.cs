@@ -10,6 +10,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
 {
     public class PlacementLayout : BaseLayout
     {
+        // Input Feilds
         private string _path;
         private Transform _root;
         private LayerMask _layerMask;
@@ -19,6 +20,11 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private Vector2 _prefabsScroll;
         private int _selPrefabGrid;
         private int _selPath;
+        private UnityEditor.Editor _preview;
+        private GUIStyle _previewColour;
+        private GameObject _previewPrefab; // For storing the selected prefab
+
+        // Internal Fields
         private RaycastHit _hit; // Storing ray hit
         private Transform _prefabValidate;
         private Transform _prefabTemp; // For storing created prefabs
@@ -75,6 +81,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                     _paths = _prefabSearch.GetPrefabPaths();
                     _selPath = 0; // Resetting the drop down selection
                     _curPath = -1; // Setting the prefabs to be updated in the first change call
+                    if (_paths.Length == 0 && _prefabs.Count != 0) ClearPrefabs(); // Clearing the prefab and prefab name list
                 }
                 EndHorizontal();
 
@@ -96,13 +103,35 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 _selPrefabGrid = SelectionGrid(_selPrefabGrid, _prefabsNames.ToArray(), 2);
                 EndScrollView();
 
+                #region Prefab Preview
+                if (IsPathsFound()) // Condition for showing preview
+                {
+                    if (_previewPrefab != GetSelectedPrefab().gameObject) // Checking if selection have changed.
+                    {
+                        _previewPrefab = GetSelectedPrefab().gameObject; // Updating preview prefab
+
+                        if (_previewPrefab != null) // Checking if the preview prefab is NOT null
+                        {
+                            if (_preview != null) UnityEditor.Editor.DestroyImmediate(_preview); // Destroying previous editor to avoid allocate cull masking issue
+                            if (_preview == null) _preview = UnityEditor.Editor.CreateEditor(_previewPrefab); // Creating a new editor with the updated prefab view
+                        }
+                    }
+
+                    Space(10f);
+                    if (_preview != null) _preview.OnPreviewGUI(GUILayoutUtility.GetRect(256f, 256f), _previewColour); // Showing the prefab preview
+                    Space(10f);
+                }
+                #endregion
+
                 BeginHorizontal();
                 Space(20f);
+                LabelWidth(100f);
                 _root = TransformField("Root", "The root into which the prefab will be placed. Keeping null means default root will be used.", _root, true);
                 EndHorizontal();
 
                 BeginHorizontal();
                 Space(20f);
+                LabelWidth(100f);
                 _layerMask = LayerField("Collidable Layer", "The layer on which the prefab will be placed.", _layerMask);
                 EndHorizontal();
 
@@ -154,7 +183,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             {
                 if (Physics.Raycast(HandleUtility.GUIPointToWorldRay(currentEvent.mousePosition), out _hit, Mathf.Infinity, 1 << _layerMask)) // Hitting the correct layer
                 {
-                    _prefabTemp = _root == null ? PrefabUtility.InstantiatePrefab(_prefabs[_selPrefabGrid]) as Transform : PrefabUtility.InstantiatePrefab(_prefabs[_selPrefabGrid], _root) as Transform; // Creating the prefab
+                    _prefabTemp = _root == null ? PrefabUtility.InstantiatePrefab(GetSelectedPrefab()) as Transform : PrefabUtility.InstantiatePrefab(GetSelectedPrefab(), _root) as Transform; // Creating the prefab
                     _prefabTemp.position = _getActualPosition(_hit.point); // Placing in hit position
                     _prefabTemp.rotation = _getActualRotation(_prefabTemp.rotation); // Rotating to the actual rotation
                     _prefabTemp.localScale = _getActualScale(_prefabTemp.localScale); // Setting the actual scale
@@ -190,6 +219,8 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             _placeGroup.valueChanged.AddListener(repaint);
             _placeLimitGroup = new AnimBool(false);
             _placeLimitGroup.valueChanged.AddListener(repaint);
+            _previewColour = new GUIStyle();
+            _previewColour.normal.background = EditorGUIUtility.whiteTexture;
         }
 
         /// <summary>
@@ -209,8 +240,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         /// <param name="path">The path from which to load the prefabs, of type string</param>
         private void LoadPrefabs(string path)
         {
-            _prefabs.Clear(); // Clearing all prefabs
-            _prefabsNames.Clear(); // Clearing all prefab names
+            ClearPrefabs(); // Clearing the prefab and prefab name list
 
             if (Directory.Exists(path)) // Checking if the path exists
             {
@@ -235,9 +265,24 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         }
 
         /// <summary>
+        /// This method clears the prefab and prefab name lists.
+        /// </summary>
+        private void ClearPrefabs()
+        {
+            _prefabs.Clear();
+            _prefabsNames.Clear();
+        }
+
+        /// <summary>
         /// This method checks if the path has been loaded.
         /// </summary>
         /// <returns>True means loaded, false otherwise, of type bool</returns>
         private bool IsPathsFound() => _paths != null && _paths.Length != 0;
+
+        /// <summary>
+        /// This method gets the selected prefab.
+        /// </summary>
+        /// <returns>The selected prefab, of type Transform</returns>
+        private Transform GetSelectedPrefab() => _prefabs[_selPrefabGrid];
     }
 }
