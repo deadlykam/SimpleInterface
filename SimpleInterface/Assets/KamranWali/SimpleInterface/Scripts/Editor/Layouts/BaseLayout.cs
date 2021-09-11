@@ -28,6 +28,16 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         public void AddHideLayout(Action hideLayout) => _hideLayouts += hideLayout;
 
         /// <summary>
+        /// This method makes the give layout hide when this layout is shown and vice versa.
+        /// </summary>
+        /// <param name="layout">The layout to hide when this layout is shown and vice versa, of type BaseLayout</param>
+        public void AddHideLayout(BaseLayout layout)
+        {
+            _hideLayouts += layout.Hide;
+            layout.AddHideLayout(Hide);
+        }
+
+        /// <summary>
         /// This method gets the actual position.
         /// </summary>
         /// <param name="position">The position used to get the actual position, of type Vector3</param>
@@ -81,6 +91,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected abstract void SetupOnEnable();
 
         #region Creation
+        protected bool Toggle(string name, string tooltip, bool obj) => EditorGUILayout.Toggle(new GUIContent(name, tooltip), obj);
         protected bool ToggleLeft(string name, string toolTip, AnimBool toggle) => EditorGUILayout.ToggleLeft(new GUIContent(name, toolTip), toggle.target);
         protected Transform TransformField(string name, string toolTip, Transform obj, bool isHierarchy) => EditorGUILayout.ObjectField(new GUIContent(name, toolTip), obj, typeof(Transform), isHierarchy) as Transform;
         protected int LayerField(string name, string toolTip, LayerMask layerMask) => EditorGUILayout.LayerField(new GUIContent(name, toolTip), layerMask);
