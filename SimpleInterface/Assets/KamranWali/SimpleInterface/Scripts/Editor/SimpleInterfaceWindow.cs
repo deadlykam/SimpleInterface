@@ -9,6 +9,7 @@ namespace KamranWali.SimpleInterface.Editor
         private LayoutManager _manager;
         private BaseLayout _placementLayout;
         private BaseLayout _fixedPositionLayout;
+        private BaseLayout _offsetPositionLayout;
         private BaseLayout _fixedRotationLayout;
         private BaseLayout _randomRotationLayout;
         private BaseLayout _fixedScaleLayout;
@@ -55,7 +56,8 @@ namespace KamranWali.SimpleInterface.Editor
             _manager = new LayoutManager();
 
             /*===Initializing Layouts===*/
-            _placementLayout = new PlacementLayout(Repaint, GetActualPosition, GetActualRotation, GetActualScale);
+            _offsetPositionLayout = new OffsetPositionLayout(Repaint);
+            _placementLayout = new PlacementLayout(Repaint, GetActualPosition, GetActualRotation, GetActualScale, _offsetPositionLayout.IsShown);
             _fixedPositionLayout = new FixedPositionLayout(Repaint);
             _fixedRotationLayout = new FixedRotationLayout(Repaint);
             _randomRotationLayout = new RandomRotationLayout(Repaint);
@@ -63,14 +65,14 @@ namespace KamranWali.SimpleInterface.Editor
             _randomScaleLayout = new RandomScaleLayout(Repaint);
 
             /*===Linking Opposite Layouts===*/
-            _fixedRotationLayout.AddHideLayout(_randomRotationLayout.Hide);
-            _randomRotationLayout.AddHideLayout(_fixedRotationLayout.Hide);
-            _fixedScaleLayout.AddHideLayout(_randomScaleLayout.Hide);
-            _randomScaleLayout.AddHideLayout(_fixedScaleLayout.Hide);
+            _fixedPositionLayout.AddHideLayout(_offsetPositionLayout);
+            _fixedRotationLayout.AddHideLayout(_randomRotationLayout);
+            _fixedScaleLayout.AddHideLayout(_randomScaleLayout);
 
             /*===Adding Layouts===*/
             _manager.AddLayout(_placementLayout);
             _manager.AddLayout(_fixedPositionLayout);
+            _manager.AddLayout(_offsetPositionLayout);
             _manager.AddLayout(_fixedRotationLayout);
             _manager.AddLayout(_randomRotationLayout);
             _manager.AddLayout(_fixedScaleLayout);
@@ -85,6 +87,7 @@ namespace KamranWali.SimpleInterface.Editor
         private Vector3 GetActualPosition(Vector3 position)
         {
             if (_fixedPositionLayout.IsShown()) return _fixedPositionLayout.GetPosition(position); // Returning Fixed Position
+            else if (_offsetPositionLayout.IsShown()) return _offsetPositionLayout.GetPosition(position); // Returning Offset Position
             return position; // Returning the actual position
         }
 
