@@ -24,3 +24,9 @@ Stable-v1.0.0 is the latest stable build of the project. The unitypackage for th
 <p align="center"><img src="https://imgur.com/6mU2PD4.jpg"></p>
 
 ***
+### Setup:
+Before using SimpleInterface you must load the prefabs. There are two ways to load prefabs, as follows:
+1. All Search - Just press the **Load Prefabs** button. This will search your entire project, which is from the _Assets_ folder, for prefabs and will load them. This is not recommended as it will also search folders where there are no prefabs.
+2. Path Search _(Recommended)_ - In Unity under the Project tab go to a folder or folders that contains the prefab. Then _right click_ that folder and select **Copy Path**. Then _right click_ the **Path** text field and select _Paste_. Press _enter_. Now click the **Load Prefabs** button. This will now search for prefabs from the given path and will be faster than the previous method. This is the recommended way for loading the prefabs.
+Once the prefabs have been loaded the drop down list called **Prefab Paths** will be loaded with all the prefab location and a selection grid will come up with it being populated with prefabs from a single path like the image below.
+***
