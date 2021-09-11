@@ -99,6 +99,9 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected float FloatField(float obj) => EditorGUILayout.FloatField(obj);
         protected int IntField(string name, string toolTip, int obj) => EditorGUILayout.IntField(new GUIContent(name, toolTip), obj);
         protected int IntField(int obj) => EditorGUILayout.IntField(obj);
+        protected void LabelField(string name) => EditorGUILayout.LabelField(name);
+        protected void LabelField(string name, GUIStyle style) => EditorGUILayout.LabelField(name, style);
+        protected void LabelField(string name, GUIStyle style, GUILayoutOption[] options) => EditorGUILayout.LabelField(name, style, options);
         protected void LabelField(string name, string tooltip) => EditorGUILayout.LabelField(new GUIContent(name, tooltip));
         protected void LabelField(string name, string tooltip, GUIStyle style) => EditorGUILayout.LabelField(new GUIContent(name, tooltip), style);
         protected string TextField(string name, string tooltip, string obj) => EditorGUILayout.TextField(new GUIContent(name, tooltip), obj);
@@ -107,6 +110,9 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         protected Vector2 BeginScrollView(Vector2 obj, float width, float height) => EditorGUILayout.BeginScrollView(obj, GUILayout.Width(width), GUILayout.Height(height));
         protected Vector2 BeginScrollView(Vector2 obj, float height) => EditorGUILayout.BeginScrollView(obj, GUILayout.ExpandWidth(true), GUILayout.Height(height));
         protected int Popup(int obj, string name, string tooltip, string[] displayData) => EditorGUILayout.Popup(new GUIContent(name, tooltip), obj, displayData);
+        protected void Box(Texture texture) => GUILayout.Box(texture);
+        protected void Box(Texture texture, bool isExpand) => GUILayout.Box(texture, new GUILayoutOption[] { GUILayout.ExpandWidth(isExpand), GUILayout.ExpandHeight(isExpand) });
+        protected void Box(Texture texture, float width, float height, bool isExpandWidth, bool isExpandHeight) => GUILayout.Box(texture, new GUILayoutOption[] { GUILayout.Width(width), GUILayout.Height(height), GUILayout.ExpandWidth(isExpandWidth), GUILayout.ExpandHeight(isExpandHeight) });
         #endregion
 
         #region Layout

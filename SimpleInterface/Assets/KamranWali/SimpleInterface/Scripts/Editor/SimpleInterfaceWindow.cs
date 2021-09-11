@@ -6,6 +6,7 @@ namespace KamranWali.SimpleInterface.Editor
 {
     public class SimpleInterfaceWindow : EditorWindow
     {
+        private Vector2 _mainScroll; // The main scroll body that will contain all other elements
         private LayoutManager _manager;
         private BaseLayout _placementLayout;
         private BaseLayout _fixedPositionLayout;
@@ -14,6 +15,7 @@ namespace KamranWali.SimpleInterface.Editor
         private BaseLayout _randomRotationLayout;
         private BaseLayout _fixedScaleLayout;
         private BaseLayout _randomScaleLayout;
+        private BaseLayout _logoLayout; // Always at the bottom
         private Event _event; // Storing current events
 
         [MenuItem("KamranWali/SimpleInterfaceWindow")]
@@ -34,7 +36,9 @@ namespace KamranWali.SimpleInterface.Editor
         private void OnGUI()
         {
             GUILayout.Label("SimpleInterfaceWindow", EditorStyles.boldLabel);
+            _mainScroll = EditorGUILayout.BeginScrollView(_mainScroll, GUILayout.ExpandWidth(true)); // Creating main scroll to contain all elements
             _manager.OnGUI();
+            EditorGUILayout.EndScrollView(); // Ending main scroll
         }
 
         /// <summary>
@@ -63,6 +67,7 @@ namespace KamranWali.SimpleInterface.Editor
             _randomRotationLayout = new RandomRotationLayout(Repaint);
             _fixedScaleLayout = new FixedScaleLayout(Repaint);
             _randomScaleLayout = new RandomScaleLayout(Repaint);
+            _logoLayout = new LogoLayout(Repaint);
 
             /*===Linking Opposite Layouts===*/
             _fixedPositionLayout.AddHideLayout(_offsetPositionLayout);
@@ -77,6 +82,7 @@ namespace KamranWali.SimpleInterface.Editor
             _manager.AddLayout(_randomRotationLayout);
             _manager.AddLayout(_fixedScaleLayout);
             _manager.AddLayout(_randomScaleLayout);
+            _manager.AddLayout(_logoLayout); // Always at the bottom
         }
 
         /// <summary>
