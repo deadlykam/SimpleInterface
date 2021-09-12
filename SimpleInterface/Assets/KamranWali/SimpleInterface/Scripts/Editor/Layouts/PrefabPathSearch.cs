@@ -30,17 +30,23 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             _paths.Clear();
             _pathNames.Clear();
             _pathsAll = Directory.GetDirectories(path, ".", SearchOption.AllDirectories);
+            AddPrefabPath(path);
+            for (_index = 0; _index < _pathsAll.Length; _index++) AddPrefabPath(_pathsAll[_index]); // Loop for finding the prefab paths
+        }
 
-            for (_index = 0; _index < _pathsAll.Length; _index++) // Loop for finding the prefab paths
+        /// <summary>
+        /// This method adds a prefab path to the list if it contains prefabs.
+        /// </summary>
+        /// <param name="path">The path to add if it contains prefabs, of type string</param>
+        private void AddPrefabPath(string path)
+        {
+            path = path.Replace("\\", "/"); // Fixing path location
+            _pathObjects = Directory.GetFiles(path, "*.prefab"); // Adding all prefab in the folder
+
+            if (_pathObjects.Length != 0) // Condition to add path and path name
             {
-                _pathsAll[_index] = _pathsAll[_index].Replace("\\", "/"); // Fixing path location
-                _pathObjects = Directory.GetFiles(_pathsAll[_index], "*.prefab"); // Adding all prefab in the folder
-
-                if (_pathObjects.Length != 0) // Condition to add path and path name
-                {
-                    _paths.Add(_pathsAll[_index]); // Adding path
-                    _pathNames.Add(_pathsAll[_index].Substring(_pathsAll[_index].LastIndexOf("/") + 1)); // Adding name
-                }
+                _paths.Add(path); // Adding path
+                _pathNames.Add(path.Substring(path.LastIndexOf("/") + 1)); // Adding name
             }
         }
 

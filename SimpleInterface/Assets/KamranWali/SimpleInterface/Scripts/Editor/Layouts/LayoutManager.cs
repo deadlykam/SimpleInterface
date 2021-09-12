@@ -25,21 +25,12 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         /// <summary>
         /// This method calls all the layout OnGUIs
         /// </summary>
-        public void OnGUI()
-        {
-            // Loop for setting up all the layout GUIs
-            for (_pointerOnGUI = 0; _pointerOnGUI < _data.Count; _pointerOnGUI++)
-                _data[_pointerOnGUI].SetupOnGUI();
-        }
+        public void OnGUI() { for (_pointerOnGUI = 0; _pointerOnGUI < _data.Count; _pointerOnGUI++) _data[_pointerOnGUI].SetupOnGUI(); } // Loop for setting up all the layout GUIs
 
         /// <summary>
         /// This method updates the layouts.
         /// </summary>
         /// <param name="currentEvent">The current event, of type Event</param>
-        public void Update(Event currentEvent)
-        {
-            for (_pointerUpdate = 0; _pointerUpdate < _data.Count; _pointerUpdate++)
-                _data[_pointerUpdate].Update(currentEvent);
-        }
+        public void Update(Event currentEvent) { for (_pointerUpdate = 0; _pointerUpdate < _data.Count; _pointerUpdate++) _data[_pointerUpdate].Update(currentEvent); }
     }
 }
