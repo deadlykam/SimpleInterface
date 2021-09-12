@@ -86,8 +86,21 @@ You can enable/disable **Fixed Scale** by pressing the hotkey **K**.
 You can enable/disable **Random Scale** by pressing the hotkey **L**
 
 ***
-## Developing:
+## Developer:
 Simple Interface was made by keeping simple development process for developers in mind. There are blue prints that will help in adding new layout and features into Simple Interface.
+#### [SimpleInterfaceWindow](https://github.com/deadlykam/SimpleInterface/blob/019fec7b04374283d29127b5fda540e2b6a97677/SimpleInterface/Assets/KamranWali/SimpleInterface/Scripts/Editor/SimpleInterfaceWindow.cs):
+This is the main class that helps to create all the other layouts and use all the features. New **BaseLayouts** must be initialized in this class. The **BaseLayout \_placementLayout** must always be in the top and the **BaseLayout \_logoLayout** must always be at the bottom. Place any **BaseLayouts** in between these two **BaseLayouts** It also contains three import methods called **Vector3 GetActualPosition(Vector3)**, **Quaternion GetActualRotation(Quaternion)** and **Vector3 GetActualScale(Vector3)**. These three method shares the new calculated position, rotation and scale with the main **BaseLayout** which is the **BaseLayout \_placementLayout**. Put the appropriate functionality feature in the correct method from your custom **BaseLayout**.
+
+#### [BaseLayout](https://github.com/deadlykam/SimpleInterface/blob/019fec7b04374283d29127b5fda540e2b6a97677/SimpleInterface/Assets/KamranWali/SimpleInterface/Scripts/Editor/Layouts/BaseLayout.cs):
+This is an abstract class and is the blue print for creating a new layout and functionality. Extending this class will import all the necessary methods that MUST be filled up. Check out the other classes that extends from **BaseLayout** to understand how it works. Here is a brief explanation of the methods:
+1. **void SetupOnGUI():** This is the method where all the _EditorGUILayout_ and _GUILayout_ elements must be called. Basically this method handles the look of your layout.
+2. **void Update(UnityEngine.Event):** This is the method where user input must be handled and any continuous logic. Basically this method acts like _Monobehaviour.Update()_ method.
+3. **bool IsShown():** This method must contain the logic for saying if the layout is being shown or active.
+4. **void Hide():** This method must contain the logic for hiding the layout.
+5. **void SetupOnEnable():** This method contains all the logic for initializaing any local scope variable.
+
+After filling up these methods you must initialize the custom **BaseLayout** in the **SimpleInterfaceWindow**. First add the **BaseLayout** with the other **BaseLayout** fields but in between **BaseLayout \_placementLayout** and **BaseLayout \_logoLayout**. Then in the **void SimpleInterfaceWindow.Setup()** method initialize the custom **BaseLayout**. Under the **===Linking Opposite Layouts===** comment add any layout that needs to be hidden when the custom **BaseLayout** is shown, this is optional. Now under the **===Ading Layouts===** comment add the **BaseLayout** to the **\_manager**. Added right before **\_logoLayout**. That is it and now when you open up Simple Interface in Unity3D your new custom layout will pop up at the bottom right before the logo.
+
 ***
 ## Versioning
 The project uses [Semantic Versioning](https://semver.org/). Available versions can be seen in [tags on this repository]().
