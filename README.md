@@ -12,7 +12,7 @@ This is a simple Unity3D interface that helps to put prefabs easily into the edi
 - [Installation](#installation)
 - [Setup](#setup)
 - [Features](#features)
-  - [Place Prefab](#place-prefab:)
+  - [Place Prefab](#place-prefab)
   - [Limit Placement](#limit-placement:)
   - [Drag](#drag:)
   - [Fixed Position](#fixed-position:)
