@@ -125,7 +125,7 @@ After filling up these methods you must initialize the custom **BaseLayout** in 
 
 ***
 ## Versioning
-The project uses [Semantic Versioning](https://semver.org/). Available versions can be seen in [tags on this repository]().
+The project uses [Semantic Versioning](https://semver.org/). Available versions can be seen in [tags on this repository](https://github.com/deadlykam/SimpleInterface/tags).
 ***
 ## Authors
 - Syed Shaiyan Kamran Waliullah 
