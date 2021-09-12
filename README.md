@@ -24,9 +24,30 @@ Stable-v1.0.0 is the latest stable build of the project. The unitypackage for th
 <p align="center"><img src="https://imgur.com/6mU2PD4.jpg"></p>
 
 ***
-### Setup:
+## Setup:
 Before using SimpleInterface you must load the prefabs. There are two ways to load prefabs, as follows:
-1. All Search - Just press the **Load Prefabs** button. This will search your entire project, which is from the _Assets_ folder, for prefabs and will load them. This is not recommended as it will also search folders where there are no prefabs.
-2. Path Search _(Recommended)_ - In Unity under the Project tab go to a folder or folders that contains the prefab. Then _right click_ that folder and select **Copy Path**. Then _right click_ the **Path** text field and select _Paste_. Press _enter_. Now click the **Load Prefabs** button. This will now search for prefabs from the given path and will be faster than the previous method. This is the recommended way for loading the prefabs.
-Once the prefabs have been loaded the drop down list called **Prefab Paths** will be loaded with all the prefab location and a selection grid will come up with it being populated with prefabs from a single path like the image below.
+1. **All Search** - Just press the **Load Prefabs** button. This will search your entire project, which is from the _Assets_ folder, for prefabs and will load them. This is not recommended as it will also search folders where there are no prefabs.
+2. **Path Search _(Recommended)_** - In Unity under the Project tab go to a folder or folders that contains the prefab. Then _right click_ that folder and select **Copy Path**. Then _right click_ the **Path** text field and select _Paste_. Press _enter_. Now click the **Load Prefabs** button. This will now search for prefabs from the given path and will be faster than the previous method. This is the recommended way for loading the prefabs.
+
+Once the prefabs have been loaded the drop down list called **Prefab Paths** will be loaded with all the prefab location and a selection grid will come up with it being populated with prefabs from a single path. Also the first prefab in the first selected path/folder will be shown in the preview window like the image below.
+<p align="center"><img src="https://imgur.com/ZQgV0Tb.jpg"></p>
+
+***
+## Features:
+#### 1. Place Prefab:
+Once [Setup](#setup) has been done you need to first decide on which mask layer should the prefabs be placed. To do this you need to select the mask layer in **Collidable Layer**. Now select the prefab you want to place from the selection grid. Finally in the Scene window click on the objects with the **Collidable Layer** and colliders for placing the prefab. The prefabs will be placed into the default root GameObject.
+
+You can also place the prefabs into a certain GameObject. To do this drag and drop a GameObject from the _Hierarchy_ window into the **Root** field in the Simple Interface. Now any prefab placed will be inside the **Root** GameObject.
+
+You can enable/disable **Place Prefab** by pressing the hotkey **U**. It is recommended to disable **Place Prefab** when not working with Simple Interface for avoiding any unnecessary prefab placement.
+
+#### 2. Limit Placement:
+**Limit Placement** allows you to control how many prefabs can be placed. First follow [Place Prefab](). Then enable the **Limit Placement** by ticking it or by pressing the hotkey **B**. In the **Max** field give the maximum number of prefabs that can be placed. Below the **Max** field is a label which shows how many prefabs have been placed and how many are left. The **Placed** value should be 0 and the **Left** value should be the maximum value. If they are not then press the **Reset** button to reset the values.
+
+Now start placing the prefabs. You will notice that the **Placed** and **Left** values are changing as the prefabs are being placed. Once the **Placed** value has become the maximum value and the **Left** value has become 0 you won't be able to place anymore prefabs. If you want to place more prefabs of the same amount then press the **Reset** button or press the hotkey **N** for resetting the **Limit Placement** and this will allow to place prefabs again.
+
+You can enable/disable **Limit Placement** by pressing the hotkey **B**.
+
+
+
 ***
