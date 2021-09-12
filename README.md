@@ -86,6 +86,9 @@ You can enable/disable **Fixed Scale** by pressing the hotkey **K**.
 You can enable/disable **Random Scale** by pressing the hotkey **L**
 
 ***
+## Developing:
+Simple Interface was made by keeping simple development process for developers in mind. There are blue prints that will help in adding new layout and features into Simple Interface.
+***
 ## Versioning
 The project uses [Semantic Versioning](https://semver.org/). Available versions can be seen in [tags on this repository]().
 ***
