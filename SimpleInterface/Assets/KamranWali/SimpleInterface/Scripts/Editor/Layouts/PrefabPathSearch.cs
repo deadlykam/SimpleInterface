@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -12,6 +13,9 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
         private List<string> _pathNames;
         private string[] _pathObjects;
         private int _index;
+        private int _index2;
+        private string _tempName;
+        private string _tempPath;
 
         public PrefabPathSearch()
         {
@@ -32,6 +36,32 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             _pathsAll = Directory.GetDirectories(path, ".", SearchOption.AllDirectories);
             AddPrefabPath(path);
             for (_index = 0; _index < _pathsAll.Length; _index++) AddPrefabPath(_pathsAll[_index]); // Loop for finding the prefab paths
+            if (_paths.Count > 1) SortPath(true);
+        }
+
+        /// <summary>
+        /// This method sorts the path with the path name.
+        /// </summary>
+        /// <param name="isAscending">Flag to sort in ascending order, false means descending order, of type bool</param>
+        private void SortPath(bool isAscending)
+        {
+            for(_index = 0; _index < _pathNames.Count; _index++) // Loop for going through all elements
+            {
+                for(_index2 = _index + 1; _index2 < _pathNames.Count; _index2++) // Loop for going through all unsorted element
+                {
+                    // Condition to check if ascending order or descending order
+                    if(isAscending ? _pathNames[_index].CompareTo(_pathNames[_index2]) > 0 : _pathNames[_index].CompareTo(_pathNames[_index2]) < 0)
+                    {
+                        // Sort Swapping
+                        _tempName = _pathNames[_index];
+                        _tempPath = _paths[_index];
+                        _pathNames[_index] = _pathNames[_index2];
+                        _paths[_index] = _paths[_index2];
+                        _pathNames[_index2] = _tempName;
+                        _paths[_index2] = _tempPath;
+                    }
+                }
+            }
         }
 
         /// <summary>
