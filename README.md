@@ -51,7 +51,7 @@ You can enable/disable **Limit Placement** by pressing the hotkey **B**.
 #### Drag:
 **Drag** mode allows you to place multiple prefabs of the same type in one go by holding the left mouse button and then dragging the mouse. First follow [Place Prefab](). Then enable the **Drag** by ticking it or by pressing the hotkey **M**. In the Scene window hold the left mouse button and drag it around to place multiple prefabs in one go.
 
-Note: This will add lot of prefabs while dragging. To help control the prefab placement in drag mode please see [Limit Placement]() and [Offset Position]().
+_Note: This will add lot of prefabs while dragging. To help control the prefab placement in drag mode please see [Limit Placement]() and [Offset Position]()._
 
 You can enable/disable **Drag** by pressing the hotkey **M**.
 
@@ -64,5 +64,25 @@ You can enable/disable **Fixed Position** by pressing the hotkey **I**.
 **Offset Position** allows you to control how far a prefab should be placed from the last placed position. First follow [Place Prefab](). Then enable the **Offset Position** by ticking it or by pressing the hotkey **V**. Now select the Vector3 axis that you want to give a distance threshold to which are **X**, **Y** and **Z**. After selecting the axis you can now give a threshold value to that axis. Now place a prefab in the Scene window. Then place another prefab near the last prefab. Depending on your selected axis and threshold value the second prefab will NOT be placed near the first prefab. You can only place another prefab that is further than the threshold value from the last prefab. This will allow you to not have prefabs jumbled up together when placing them.
 
 You can enable/disable **Offset Position** by pressing the hotkey **V**.
+
+#### Fixed Rotation:
+**Fixed Rotation** allows you to control the placement rotation of the prefab by giving a fixed rotation value to any of the Quaternion angles. First follow [Place Prefab](). Then enable the **Fixed Rotation** by ticking it or by pressing the hotkey **O**. Now select the Quaternion angle that you want to give fixed value to which are **X**, **Y** and **Z**. After selecting the angle you can now give a fixed value to that angle. Now place a prefab in the Scene window. You will notice that the prefab has been placed with the given fixed rotation angles.
+
+You can enable/disable **Fixed Rotation** by pressing the hotkey **O**.
+
+#### Random Rotation:
+**Random Rotation** allows you to give random placment rotation of the prefab by giving a random rotation range value to any of the Quaternion angles. First follow [Place Prefab](). Then enable the **Random Rotation** by ticking it or by pressing the hotkey **J**. Now select the Quaternion angle that you want to give a random value to which are **X**, **Y** and **Z**. After selecting the angle you can now give a range value for that angle in the **Min** and **Max** fields. Now place prefabs in the Scene window. You will notice that each prefab have different rotation angles. This is because each time a prefab is placed a random angle is given to that prefab from the range value.
+
+You can enable/disable **Random Rotation** by pressing the hotkey **J**.
+
+#### Fixed Scale:
+**Fixed Scale** allows you to control the placement scale of the prefab by giving a fixed value. First follow [Place Prefab](). Then enable the **Fixed Scale** by ticking it or by pressing the hotkey **K**. Now give a scale value in the **Scale** field. Then place a prefab in the Scene window. You will notice that the scale of the prefab has changed to the one you have just given in the **Scale** field.
+
+You can enable/disable **Fixed Scale** by pressing the hotkey **K**.
+
+#### Random Scale:
+**Random Scale** allows you to give random placement scale of the prefab by giving a random scale range value. First follow [Place Prefab](). Then enable the **Random Scale** by ticking it or by pressing the hotkey **L**. Now give a range scale in the **Min** and **Max** fields. Then place prefabs in the Scene window. You will notice that each prefab have different scale value. This is because each time a prefab is placed a random scale is given to that prefab from the range value.
+
+You can enable/disable **Random Scale** by pressing the hotkey **L**
 
 ***
