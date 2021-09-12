@@ -8,6 +8,9 @@ namespace KamranWali.SimpleInterface.Editor
     {
         private Vector2 _mainScroll; // The main scroll body that will contain all other elements
         private LayoutManager _manager;
+        private Event _event; // Storing current events
+
+        // BaseLayout Fields
         private BaseLayout _placementLayout;
         private BaseLayout _fixedPositionLayout;
         private BaseLayout _offsetPositionLayout;
@@ -16,7 +19,6 @@ namespace KamranWali.SimpleInterface.Editor
         private BaseLayout _fixedScaleLayout;
         private BaseLayout _randomScaleLayout;
         private BaseLayout _logoLayout; // Always at the bottom
-        private Event _event; // Storing current events
 
         [MenuItem("KamranWali/SimpleInterfaceWindow")]
         private static void Init()
@@ -49,7 +51,6 @@ namespace KamranWali.SimpleInterface.Editor
         {
             _event = Event.current;
             _manager.Update(_event);
-            //TODO: For dragging Tools.current = Tool.View and use MouseDrag
         }
 
         /// <summary>
