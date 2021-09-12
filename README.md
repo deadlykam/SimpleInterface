@@ -2,9 +2,31 @@
 
 # Simple Interface
 
-### Introduction:
+### Introduction
 This is a simple Unity3D interface that helps to put prefabs easily into the editor.
 <p align="center"><img src="https://imgur.com/ta999OY.jpg"></p>
+
+## Table of Contents:
+- [Prerequisites](#prerequisites)
+- [Stable Build](#stable-build)
+- [Installation](#installation)
+- [Setup](#setup)
+- [Features](#features)
+  - [Place Prefab](#place-prefab:)
+  - [Limit Placement](#limit-placement:)
+  - [Drag](#drag:)
+  - [Fixed Position](#fixed-position:)
+  - [Offset Position](#offset-position:)
+  - [Fixed Rotation](#fixed-rotation:)
+  - [Random Rotation](#random-rotation:)
+  - [Fixed Scale](#fixed-scale:)
+  - [Random Scale](#random-scale:)
+- [Developer](#developer)
+  - [SimpleInterfaceWindow](#simpleinterfacewindow:)
+  - [BaseLayout](#baselayout:)
+- [Versioning](#versioning)
+- [Authors](#authors)
+- [License](#license)
 
 ## Prerequisites
 #### Unity Game Engine
@@ -13,7 +35,7 @@ Unity3D version of **2020.3.3f1** and above should work. The master version is *
 ## Stable Build
 Stable-v1.0.0 is the latest stable build of the project. The unitypackage for this project can also be found there. If development is going to be done on this project then it is advised to branch off of any Stable branches because they will NOT be updated. Any other branches are subjected to change including the main branch.
 ***
-## Installation:
+## Installation
 1. First download the latest SimpleInterface-vx.x.x.unitypackage from the latest Stable build. 
 2. Once download is completed open up the Unity project you want to use this project in.
 3. Now go to Assets -> Import Package -> Custom Package.
@@ -24,7 +46,7 @@ Stable-v1.0.0 is the latest stable build of the project. The unitypackage for th
 <p align="center"><img src="https://imgur.com/6mU2PD4.jpg"></p>
 
 ***
-## Setup:
+## Setup
 Before using SimpleInterface you must load the prefabs. There are two ways to load prefabs, as follows:
 1. **All Search** - Just press the **Load Prefabs** button. This will search your entire project, which is from the _Assets_ folder, for prefabs and will load them. This is not recommended as it will also search folders where there are no prefabs.
 2. **Path Search _(Recommended)_** - In Unity under the Project tab go to a folder or folders that contains the prefab. Then _right click_ that folder and select **Copy Path**. Then _right click_ the **Path** text field and select _Paste_. Press _enter_. Now click the **Load Prefabs** button. This will now search for prefabs from the given path and will be faster than the previous method. This is the recommended way for loading the prefabs.
@@ -33,7 +55,7 @@ Once the prefabs have been loaded the drop down list called **Prefab Paths** wil
 <p align="center"><img src="https://imgur.com/ZQgV0Tb.jpg"></p>
 
 ***
-## Features:
+## Features
 #### Place Prefab:
 Once [Setup](#setup) has been done you need to first decide on which mask layer should the prefabs be placed. To do this you need to select the mask layer in **Collidable Layer**. Now select the prefab you want to place from the selection grid. Finally in the Scene window left click on the objects with the **Collidable Layer** and colliders for placing the prefab. The prefabs will be placed into the default root GameObject.
 
@@ -86,7 +108,7 @@ You can enable/disable **Fixed Scale** by pressing the hotkey **K**.
 You can enable/disable **Random Scale** by pressing the hotkey **L**
 
 ***
-## Developer:
+## Developer
 Simple Interface was made by keeping simple development process for developers in mind. There are blue prints that will help in adding new layout and features into Simple Interface.
 #### [SimpleInterfaceWindow](https://github.com/deadlykam/SimpleInterface/blob/019fec7b04374283d29127b5fda540e2b6a97677/SimpleInterface/Assets/KamranWali/SimpleInterface/Scripts/Editor/SimpleInterfaceWindow.cs):
 This is the main class that helps to create all the other layouts and use all the features. New **BaseLayouts** must be initialized in this class. The **BaseLayout \_placementLayout** must always be in the top and the **BaseLayout \_logoLayout** must always be at the bottom. Place any **BaseLayouts** in between these two **BaseLayouts** It also contains three import methods called **Vector3 GetActualPosition(Vector3)**, **Quaternion GetActualRotation(Quaternion)** and **Vector3 GetActualScale(Vector3)**. These three method shares the new calculated position, rotation and scale with the main **BaseLayout** which is the **BaseLayout \_placementLayout**. Put the appropriate functionality feature in the correct method from your custom **BaseLayout**.
