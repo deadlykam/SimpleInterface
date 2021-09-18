@@ -136,6 +136,9 @@ This is an abstract class and is the blue print for creating a new layout and fu
 After filling up these methods you must initialize the custom **BaseLayout** in the **SimpleInterfaceWindow**. First add the **BaseLayout** with the other **BaseLayout** fields but in between **BaseLayout \_placementLayout** and **BaseLayout \_logoLayout**. Then in the **void SimpleInterfaceWindow.Setup()** method initialize the custom **BaseLayout**. Under the **===Linking Opposite Layouts===** comment add any layout that needs to be hidden when the custom **BaseLayout** is shown, this is optional. Now under the **===Ading Layouts===** comment add the **BaseLayout** to the **\_manager**. Added right before **\_logoLayout**. That is it and now when you open up Simple Interface in Unity3D your new custom layout will pop up at the bottom right before the logo.
 
 ***
+## Bug Fixes
+- **Similar Folder Name(Issue #44):** Fixed the bug where similar folder name could not populate the drop down box.
+***
 ## Versioning
 The project uses [Semantic Versioning](https://semver.org/). Available versions can be seen in [tags on this repository](https://github.com/deadlykam/SimpleInterface/tags).
 ***
