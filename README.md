@@ -25,6 +25,7 @@ This is a simple Unity3D interface that helps to put prefabs easily into the edi
 - [Developer](#developer)
   - [SimpleInterfaceWindow](#simpleinterfacewindow)
   - [BaseLayout](#baselayout)
+- [Bug Fixes](#bug-fixes)
 - [Versioning](#versioning)
 - [Authors](#authors)
 - [License](#license)
