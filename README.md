@@ -21,6 +21,7 @@ This is a simple Unity3D interface that helps to put prefabs easily into the edi
   - [Random Rotation](#random-rotation)
   - [Fixed Scale](#fixed-scale)
   - [Random Scale](#random-scale)
+  - [Hotkeys](#hotkeys)
 - [Developer](#developer)
   - [SimpleInterfaceWindow](#simpleinterfacewindow)
   - [BaseLayout](#baselayout)
@@ -106,6 +107,17 @@ You can enable/disable **Fixed Scale** by pressing the hotkey **K**.
 **Random Scale** allows you to give random placement scale of the prefab by giving a random scale range value. First follow [Place Prefab](#place-prefab). Then enable the **Random Scale** by ticking it or by pressing the hotkey **L**. Now give a range scale in the **Min** and **Max** fields. Then place prefabs in the Scene window. You will notice that each prefab have different scale value. This is because each time a prefab is placed a random scale is given to that prefab from the range value.
 
 You can enable/disable **Random Scale** by pressing the hotkey **L**
+
+#### Hotkeys:
+* U = Toggling prefab placement.
+* I = Toggling fixed position.
+* O = Toggling fixed Rotation.
+* J = Toggling random Rotation.
+* K = Toggling fixed Scale.
+* L = Toggling random Scale.
+* B = Toggling placement limit.
+* N = Resetting the placement counter.
+* M = Toggling drag.
 
 ***
 ## Developer
