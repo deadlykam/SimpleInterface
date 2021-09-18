@@ -4,7 +4,7 @@
 
 ### Introduction
 This is a simple Unity3D interface that helps to put prefabs easily into the editor.
-<p align="center"><img src="https://imgur.com/ta999OY.jpg"></p>
+<p align="center"><img src="https://imgur.com/jduzq4M.jpg"></p>
 
 ## Table of Contents:
 - [Prerequisites](#prerequisites)
