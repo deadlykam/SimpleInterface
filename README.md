@@ -35,10 +35,10 @@ This is a simple Unity3D interface that helps to put prefabs easily into the edi
 Unity3D version of **2020.3.3f1** and above should work. The main branch version is **2020.3.3f1**.
 ***
 ## Stable Build
-[Stable-v1.0.0](https://github.com/deadlykam/SimpleInterface/tree/Stable-v1.0.0) is the latest stable build of the project. The unitypackage for this project can also be found there. If development is going to be done on this project then it is advised to branch off of any Stable branches because they will NOT be changed or update except for README.md. Any other branches are subjected to change including the main branch.
+[Stable-v1.0.1](https://github.com/deadlykam/SimpleInterface/tree/Stable-v1.0.1) is the latest stable build of the project. The unitypackage for this project can also be found there. If development is going to be done on this project then it is advised to branch off of any Stable branches because they will NOT be changed or update except for README.md. Any other branches are subjected to change including the main branch.
 ***
 ## Installation
-1. First download the latest [SimpleInterface-vx.x.x.unitypackage](https://github.com/deadlykam/SimpleInterface/releases/tag/v1.0.0) from the latest Stable build. 
+1. First download the latest [SimpleInterface-vx.x.x.unitypackage](https://github.com/deadlykam/SimpleInterface/releases/tag/v1.0.1) from the latest Stable build. 
 2. Once download is completed open up the Unity project you want to use this project in.
 3. Now go to Assets -> Import Package -> Custom Package.
 4. Select the SimpleInterface-vx.x.x you just downloaded and open it.
