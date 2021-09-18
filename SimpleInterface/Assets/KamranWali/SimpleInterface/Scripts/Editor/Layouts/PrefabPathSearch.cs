@@ -37,6 +37,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
             AddPrefabPath(path);
             for (_index = 0; _index < _pathsAll.Length; _index++) AddPrefabPath(_pathsAll[_index]); // Loop for finding the prefab paths
             if (_paths.Count > 1) SortPath(true);
+            for (_index = 0; _index < _pathNames.Count; _index++) _pathNames[_index] = _pathNames[_index].Insert(0, $"{(_index + 1).ToString()}. "); // Loop for adding prefix to path names
         }
 
         /// <summary>

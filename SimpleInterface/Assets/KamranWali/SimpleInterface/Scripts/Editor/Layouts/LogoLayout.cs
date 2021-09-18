@@ -34,7 +34,7 @@ namespace KamranWali.SimpleInterface.Editor.Layouts
                 Space(10f);
                 BeginHorizontal();
                 Space(5f);
-                LabelField("Version - v1.0.0", _versionStyle);
+                LabelField("Version - v1.0.1", _versionStyle);
                 EndHorizontal();
 
             }
